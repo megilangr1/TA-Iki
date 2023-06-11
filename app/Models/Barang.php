@@ -20,4 +20,14 @@ class Barang extends Model
     {
         return $this->belongsTo(Kategori::class, 'id_kategori', 'id');
     }
+
+    public function harga()
+    {
+        return $this->hasOne(HargaBarang::class, 'id_barang', 'id')->orderBy('tanggal_harga', 'DESC')->orderBy('created_at', 'DESC');
+    }
+
+    public function hargaWithTrashed()
+    {
+        return $this->hasMany(HargaBarang::class, 'id_barang', 'id')->withTrashed()->orderBy('tanggal_harga', 'DESC')->orderBy('created_at', 'DESC');
+    }
 }

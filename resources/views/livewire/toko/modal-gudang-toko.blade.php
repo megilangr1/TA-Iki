@@ -30,7 +30,7 @@
             </div>
             <div class="col-md-3">
               <button class="btn btn-success btn-xs btn-block" wire:click="{{ $state['id'] != null ? 'updateData':'createData' }}">
-                <i class="fa fa-plus"></i> &ensp; {{ $state['id'] != null ? 'Simpan Data':'Buat Data Toko' }}
+                <i class="fa fa-plus"></i> &ensp; {{ $state['id'] != null ? 'Simpan Data':'Buat Data' }}
               </button>
             </div>
             <div class="col-md-3">
@@ -100,12 +100,12 @@
                   </tr>
                 @empty
                   <tr>
-                    <td class="align-middle text-center p-2" colspan="4"> - Belum Ada Data Gudang - </td>
+                    <td class="align-middle text-center p-2" colspan="5"> - Belum Ada Data Gudang - </td>
                   </tr>
                 @endforelse
               @else
                 <tr>
-                  <td class="align-middle text-center p-2" colspan="4"> - Silahkan Pilih Ulang Toko - </td>
+                  <td class="align-middle text-center p-2" colspan="5"> - Silahkan Pilih Ulang Toko - </td>
                 </tr>
               @endif
             </tbody>
