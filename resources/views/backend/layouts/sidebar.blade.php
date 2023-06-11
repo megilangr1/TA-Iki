@@ -19,9 +19,9 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{{ route('master-data.toko') }}" class="nav-link">
             <i class="fas fa-university nav-icon"></i>
-            <p>Base Data</p>
+            <p>Daftar Toko</p>
           </a>
         </li>
       </ul>

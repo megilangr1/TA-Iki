@@ -68,6 +68,10 @@
     padding: 6px 10px !important;
     font-size: 15px !important;
   }
+
+  div > nav > ul.pagination {
+    margin-bottom: 0px !important;
+  }
 </style>
 
 <script>
