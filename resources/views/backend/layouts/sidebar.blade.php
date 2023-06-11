@@ -30,6 +30,12 @@
             <p>Daftar Kategori</p>
           </a>
         </li>
+        <li class="nav-item">
+          <a href="{{ route('master-data.barang') }}" class="nav-link">
+            <i class="fas fa-boxes text-sm nav-icon"></i>
+            <p>Daftar Barang</p>
+          </a>
+        </li>
       </ul>
     </li>
 

@@ -3,7 +3,7 @@
     <div class="col-12 {{ $form ? 'd-block':'d-none' }}">
       <div class="card card-outline card-success">
         <div class="card-header">
-          <h4 class="card-title" wire:click="$refresh"><i class="fa fa-edit text-sm text-success"></i> &ensp; Tambah Data Toko </h4>
+          <h4 class="card-title" wire:click="$refresh"><i class="fa fa-edit text-sm text-success"></i> &ensp; {{ $state['id'] != null ? 'Edit':'Tambah' }} Data Toko </h4>
           <div class="card-tools">
             <button class="btn btn-xs btn-danger px-3" wire:click="showForm(false)">
               <i class="fa fa-times"></i> &ensp; Tutup Form 

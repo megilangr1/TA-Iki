@@ -2,6 +2,7 @@
 
 namespace App\Helper;
 
+use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\Toko;
 
@@ -16,6 +17,9 @@ class DynamicModel
         break;
       case 'kategori':
         $model = new Kategori();
+        break;
+      case 'barang':
+        $model = new Barang();
         break;
       default:
         $model = false;
@@ -79,6 +83,31 @@ class DynamicModel
           ],
         ];
         break;
+      case 'barang':
+        $field = [
+          [
+            'th' => 'Nama Barang',
+            'th_class' => 'align-middle btw-1',
+            'field_name' => 'nama_barang',
+            'td_class' => 'align-middle font-weight-bold', 
+            'type' => 'string',
+          ],
+          [
+            'th' => 'Keterangan',
+            'th_class' => 'align-middle btw-1',
+            'field_name' => 'keterangan',
+            'td_class' => 'align-middle font-weight-bold', 
+            'type' => 'string',
+          ],
+          [
+            'th' => 'Tanggal Hapus',
+            'th_class' => 'align-middle btw-1 text-center',
+            'field_name' => 'deleted_at',
+            'td_class' => 'align-middle font-weight-bold text-center', 
+            'type' => 'date',
+          ],
+        ];
+        break;
       default:
         $field = [];
         break;
@@ -94,6 +123,16 @@ class DynamicModel
       case 'toko':
         $viewConfig = [
           'modal-title' => 'Toko Terhapus', 
+        ];
+        break;
+      case 'kategori':
+        $viewConfig = [
+          'modal-title' => 'Kategori Terhapus', 
+        ];
+        break;
+      case 'barang':
+        $viewConfig = [
+          'modal-title' => 'Barang Terhapus', 
         ];
         break;
       default:

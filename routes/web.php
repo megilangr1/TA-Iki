@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\AjaxDataController;
 use App\Http\Controllers\MainController;
+use App\Http\Livewire\Barang\MainIndex as BarangMainIndex;
 use App\Http\Livewire\Kategori\MainIndex as KategoriMainIndex;
 use App\Http\Livewire\Toko\MainIndex as TokoMainIndex;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +28,11 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('master-data')->name('master-data.')->group(function() {
         Route::get('/toko', TokoMainIndex::class)->name('toko');
         Route::get('/kategori', KategoriMainIndex::class)->name('kategori');
+        Route::get('/barang', BarangMainIndex::class)->name('barang');
+    });
+
+    Route::prefix('ajax')->name('ajax.')->middleware(['auth'])->group(function () {
+        Route::get('/kategori', [AjaxDataController::class, 'dataKategori'])->name('kategori');
     });
 });
 
