@@ -52,6 +52,9 @@
         <div class="card-header">
           <h4 class="card-title"><i class="fa fa-store text-sm text-primary"></i> &ensp; Daftar Data Toko</h4>
           <div class="card-tools">
+            <button class="btn btn-xs btn-outline-danger px-3" wire:click="$emitTo('component.modal-trashed-data', 'showModalTrashed', 'show')">
+              <span class="fa fa-trash"></span> &ensp; Data Terhapus
+            </button>
             <button class="btn btn-xs btn-success px-3" wire:click="showForm(true)">
               <i class="fa fa-plus"></i> &ensp; Tambah Data 
             </button>
@@ -104,4 +107,6 @@
       </div>
     </div>
   </div>
+
+  @livewire('component.modal-trashed-data', ['modelName' => 'toko'])
 </div>

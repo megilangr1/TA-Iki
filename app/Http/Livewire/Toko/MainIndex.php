@@ -21,6 +21,10 @@ class MainIndex extends Component
         'alamat_toko' => null,
     ];
 
+    protected $listeners = [
+        'restoreData'
+    ];
+
     public function mount()
     {
         $this->state = $this->params;
@@ -32,7 +36,7 @@ class MainIndex extends Component
 
         return view('livewire.toko.main-index', [
             'dataToko' => $getData
-        ]);
+        ])->layout('backend.layouts.master');
     }
 
     public function showForm($show, $data = [])
@@ -129,6 +133,24 @@ class MainIndex extends Component
             DB::commit();
             $this->emit('warning', 'Data di-Hapus !');
             $this->showForm(false);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $this->emit('error', 'Terjadi Kesalahan ! <br> Silahkan Hubungi Administrator !');
+            dd($e);
+        }
+    }
+
+    public function restoreData($id)
+    {
+        DB::beginTransaction();
+        try {
+            $getData = Toko::onlyTrashed()->where('id', '=', $id)->firstOrFail();
+            $restoreData = $getData->restore();
+
+            DB::commit();
+            $this->emit('info', 'Data di-Pulihkan !');
+            $this->showForm(false);
+            $this->emitTo('component.modal-trashed-data', 'refreshData'); 
         } catch (\Exception $e) {
             DB::rollBack();
             $this->emit('error', 'Terjadi Kesalahan ! <br> Silahkan Hubungi Administrator !');
