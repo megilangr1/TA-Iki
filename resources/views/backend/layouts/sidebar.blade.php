@@ -20,8 +20,14 @@
       <ul class="nav nav-treeview">
         <li class="nav-item">
           <a href="{{ route('master-data.toko') }}" class="nav-link">
-            <i class="fas fa-university nav-icon"></i>
+            <i class="fas fa-store text-sm nav-icon"></i>
             <p>Daftar Toko</p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ route('master-data.kategori') }}" class="nav-link">
+            <i class="fas fa-tags text-sm nav-icon"></i>
+            <p>Daftar Kategori</p>
           </a>
         </li>
       </ul>

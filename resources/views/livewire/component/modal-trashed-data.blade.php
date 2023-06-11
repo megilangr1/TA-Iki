@@ -50,7 +50,7 @@
                 </tr>
               @empty
                 <tr>
-                  <td colspan="{{ count($field) + 2 }}">Belum Ada Data Artikel</td>
+                  <td class="text-center" colspan="{{ count($field) + 2 }}">Belum Ada Data</td>
                 </tr>
               @endforelse
               <tr>

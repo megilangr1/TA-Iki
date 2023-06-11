@@ -14,19 +14,19 @@
           <div class="row">
             <div class="col-md-4">
               <div class="form-group">
-                <label for="nama_toko">Nama Toko : <i class="text-danger">*</i></label>
-                <input type="text" wire:model="state.nama_toko" name="nama_toko" id="nama_toko" class="form-control form-control-sm {{ $errors->has('state.nama_toko') ? 'is-invalid':'' }}" placeholder="Masukan Nama Toko..." required>
+                <label for="nama_kategori">Nama Kategori : <i class="text-danger">*</i></label>
+                <input type="text" wire:model="state.nama_kategori" name="nama_kategori" id="nama_kategori" class="form-control form-control-sm {{ $errors->has('state.nama_kategori') ? 'is-invalid':'' }}" placeholder="Masukan Nama Kategori..." required>
                 <div class="invalid-feedback">
-                  {{ $errors->first('state.nama_toko') }}
+                  {{ $errors->first('state.nama_kategori') }}
                 </div>
               </div>
             </div>
             <div class="col-md-8">
               <div class="form-group">
-                <label for="alamat_toko">Alamat Toko : </label>
-                <textarea wire:model="state.alamat_toko" name="alamat_toko" id="alamat_toko" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.alamat_toko') ? 'is-invalid':'' }}" placeholder="Masukan Alamat Toko..."></textarea>
+                <label for="keterangan">Keterangan : </label>
+                <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan..."></textarea>
                 <div class="invalid-feedback">
-                  {{ $errors->first('state.alamat_toko') }}
+                  {{ $errors->first('state.keterangan') }}
                 </div>
               </div>
             </div>
@@ -71,20 +71,17 @@
               </tr>
             </thead>
             <tbody>
-              @forelse ($dataToko as $item)
+              @forelse ($dataKategori as $item)
                 <tr>
-                  <td class="align-middle py-1 px-2 text-center">{{ ($dataToko->currentpage()-1) * $dataToko->perpage() + $loop->index + 1 }}.</td>
-                  <td class="align-middle py-1 px-2">{{ $item->nama_toko }}</td>
-                  <td class="align-middle py-1 px-2">{{ $item->alamat_toko != null ? $item->alamat_toko : '-' }}</td>
+                  <td class="align-middle py-1 px-2 text-center">{{ ($dataKategori->currentpage()-1) * $dataKategori->perpage() + $loop->index + 1 }}.</td>
+                  <td class="align-middle py-1 px-2">{{ $item->nama_kategori }}</td>
+                  <td class="align-middle py-1 px-2">{{ $item->keterangan != null ? $item->keterangan : '-' }}</td>
                   <td class="align-middle py-1 px-2 text-center">
                     <div class="btn-group">
-                      <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('toko.modal-gudang-toko', 'openGudangModal', '{{ $item->id }}')">
-                        <i class="fa fa-warehouse"></i>
-                      </button>
-                      <button class="btn btn-xs btn-warning px-3" wire:click="editData('{{ $item->id }}')">
+                      <button class="btn btn-xs btn-warning px-2" wire:click="editData('{{ $item->id }}')">
                         <i class="fa fa-edit"></i>
                       </button>
-                      <button class="btn btn-xs btn-danger px-3" wire:click="deleteData('{{ $item->id }}')">
+                      <button class="btn btn-xs btn-danger px-2" wire:click="deleteData('{{ $item->id }}')">
                         <i class="fa fa-trash"></i>
                       </button>
                     </div>
@@ -102,7 +99,7 @@
           <div class="row">
             <div class="col-12">
               <div class="float-right text-xs">
-                {{ $dataToko->links() }}
+                {{ $dataKategori->links() }}
               </div>
             </div>
           </div>
@@ -111,6 +108,5 @@
     </div>
   </div>
 
-  @livewire('component.modal-trashed-data', ['modelName' => 'toko'])
-  @livewire('toko.modal-gudang-toko')
+  @livewire('component.modal-trashed-data', ['modelName' => 'kategori'])
 </div>

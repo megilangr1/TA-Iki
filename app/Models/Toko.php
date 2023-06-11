@@ -14,4 +14,14 @@ class Toko extends Model
         'nama_toko',
         'alamat_toko'
     ];
+
+    public function gudang()
+    {
+        return $this->hasMany(Gudang::class, 'id_toko', 'id');
+    }
+
+    public function gudangWithTrashed()
+    {
+        return $this->hasMany(Gudang::class, 'id_toko', 'id')->withTrashed();
+    }
 }
