@@ -16,8 +16,8 @@ class ModalHargaBarang extends Component
     public $params = [
         'id' => null,
         'tanggal_harga' => null,
-        'harga' => 0,
-        'diskon' => 0,
+        'harga' => "0",
+        'diskon' => "0",
         'keterangan' => null
     ];
 
