@@ -15,7 +15,7 @@ class CreatePenerimaanBarangsTable extends Migration
     {
         Schema::create('penerimaan_barangs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pengiriman');
+            $table->unsignedBigInteger('id_pengiriman')->nullable();
 
             $table->unsignedBigInteger('id_toko');
             $table->unsignedBigInteger('id_gudang');

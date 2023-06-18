@@ -36,6 +36,8 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('ajax')->name('ajax.')->middleware(['auth'])->group(function () {
         Route::get('/kategori', [AjaxDataController::class, 'dataKategori'])->name('kategori');
         Route::get('/toko', [AjaxDataController::class, 'dataToko'])->name('toko');
+        Route::get('/gudang', [AjaxDataController::class, 'dataGudang'])->name('gudang');
+        Route::get('/barang', [AjaxDataController::class, 'dataBarang'])->name('barang');
     });
 
     
