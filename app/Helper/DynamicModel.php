@@ -4,6 +4,7 @@ namespace App\Helper;
 
 use App\Models\Barang;
 use App\Models\Kategori;
+use App\Models\Pegawai;
 use App\Models\Toko;
 
 class DynamicModel 
@@ -20,6 +21,9 @@ class DynamicModel
         break;
       case 'barang':
         $model = new Barang();
+        break;
+      case 'pegawai':
+        $model = new Pegawai();
         break;
       default:
         $model = false;
@@ -96,6 +100,24 @@ class DynamicModel
             'th' => 'Keterangan',
             'th_class' => 'align-middle btw-1',
             'field_name' => 'keterangan',
+            'td_class' => 'align-middle font-weight-bold', 
+            'type' => 'string',
+          ],
+          [
+            'th' => 'Tanggal Hapus',
+            'th_class' => 'align-middle btw-1 text-center',
+            'field_name' => 'deleted_at',
+            'td_class' => 'align-middle font-weight-bold text-center', 
+            'type' => 'date',
+          ],
+        ];
+        break;
+        case 'pegawai':
+        $field = [
+          [
+            'th' => 'Nama Pegawai',
+            'th_class' => 'align-middle btw-1',
+            'field_name' => 'nama_pegawai',
             'td_class' => 'align-middle font-weight-bold', 
             'type' => 'string',
           ],

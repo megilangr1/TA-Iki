@@ -83,7 +83,7 @@
         <div class="card-header">
           <h4 class="card-title"><i class="fa fa-user text-sm text-primary"></i> &ensp; Daftar Data Pegawai</h4>
           <div class="card-tools">
-            <button class="btn btn-xs btn-outline-danger px-3">
+            <button class="btn btn-xs btn-outline-danger px-3" wire:click="$emitTo('component.modal-trashed-data', 'showModalTrashed', 'show')">
               <span class="fa fa-trash"></span> &ensp; Data Terhapus
             </button>
             <button class="btn btn-xs btn-success px-3" wire:click="showForm(true)">
@@ -109,7 +109,7 @@
                   <td class="align-middle py-1 px-2">{{ $item->user->email }}</td>
                   <td class="align-middle py-1 px-2 text-center">
                     <div class="btn-group">
-                      <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('barang.modal-harga-barang', 'openGudangModal', '{{ $item->id }}')">
+                      <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('pegawai.modal-detail', 'openDetailModal', '{{ $item->id }}')">
                         <i class="fa fa-eye"></i>
                       </button>
                       <button class="btn btn-xs btn-warning px-3" wire:click="editData('{{ $item->id }}')">
@@ -132,6 +132,8 @@
       </div>
     </div>
   </div>
+  @livewire('component.modal-trashed-data', ['modelName' => 'pegawai'])
+  @livewire('pegawai.modal-detail')
 </div>
 
 @push('css')
@@ -177,7 +179,7 @@
       });
 
       Livewire.on('setSelect2', function(data) {
-        if (data != null) {
+        if (data.option != null) {
           var newOption = new Option(data.option.text, data.option.value, false, true);
           $('#id_toko').append(newOption);
         }

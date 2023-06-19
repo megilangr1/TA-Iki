@@ -37,19 +37,6 @@ class AjaxDataController extends Controller
 			return response()->json($getData);
     }
 
-    public function dataToko(Request $request)
-    {
-        $getData = new Toko();
-
-        if ($request->search != null) {
-            $getData = $getData->where(function($q) use ($request) {
-                $q->where('nama_toko', 'like', '%'. $request->search .'%');
-            });
-        }
-        
-        $getData = $getData->orderBy('nama_toko', 'ASC')->limit(10)->get()->toArray();
-        return response()->json($getData);
-    }
 
     public function dataGudang(Request $request)
     {

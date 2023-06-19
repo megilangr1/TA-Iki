@@ -29,6 +29,10 @@ class MainIndex extends Component
         'password_confirmation' => null,
     ];
 
+    protected $listeners = [
+        'restoreData'
+    ];
+
     public function mount() {
         $this->state = $this->params;
     }
@@ -144,7 +148,7 @@ class MainIndex extends Component
             $password = $getUser->password;
 
             if ($this->state['password'] != null) {
-                $password = $this->state['password'];
+                $password = Hash::make($this->state['password']);
             }
 
             $updatePegawai = $getPegawai->update([
@@ -156,11 +160,12 @@ class MainIndex extends Component
             $updateUser = $getUser->update([
                 'name' => $this->state['nama_pegawai'],
                 'email' => $this->state['email'],
-                'password' => Hash::make($password)
+                'password' => $password
             ]);
 
             DB::commit();
             $this->emit('success', 'Data Berhasil Di Ubah');
+            $this->showForm(false);
         } catch (\Exception $e) {
             DB::rollBack();
             $this->emit('error', 'Terjadi Kesalahan ! <br> Silahkan Hubungi Administrator !');
@@ -180,6 +185,28 @@ class MainIndex extends Component
             DB::commit();
             $this->emit('warning', 'Data di-Hapus !');
             $this->showForm(false);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            $this->emit('error', 'Terjadi Kesalahan ! <br> Silahkan Hubungi Administrator !');
+        }
+    }
+
+    public function restoreData($id)
+    {
+        DB::beginTransaction();
+        try {
+            $getPegawai = Pegawai::onlyTrashed()->where('id', '=', $id)->firstOrFail();
+            $getUser = User::onlyTrashed()->where('id', '=', $getPegawai->id_user)->firstOrFail();
+
+            $restorePegawai = $getPegawai->restore();
+            $restoreUser = $getUser->restore();
+
+            DB::commit();
+
+            $this->emit('info', 'Data Dipulihkan !');
+            $this->showForm(false);
+            $this->emitTo('component.modal-trashed-data', 'refreshData');
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
