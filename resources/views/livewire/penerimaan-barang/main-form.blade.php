@@ -3,7 +3,7 @@
     <div class="col-12">
       <div class="card card-outline card-success">
         <div class="card-header">
-          <h4 class="card-title" wire:click="$refresh"> <i class="fa fa-plus-circle text-sm text-success"></i> &ensp; Form Penerimaan Barang </h4>
+          <h4 class="card-title" wire:click="dummy"> <i class="fa fa-plus-circle text-sm text-success"></i> &ensp; Form Penerimaan Barang </h4>
           <div class="card-tools">
             <a href="{{ route('penerimaan-barang.index') }}" class="btn btn-xs btn-danger px-3"> <i class="fa fa-arrow-left"></i> &ensp; Kembali</a>
           </div>
@@ -15,7 +15,11 @@
                 <label for="id_toko">Toko : </label>
                 <div wire:ignore>
                   <select name="id_toko" id="id_toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;">
-                    <option value=""></option>
+                    @if ($penerimaanBarang != null && isset($penerimaanBarang['toko']) && $penerimaanBarang['toko'] != null)
+                      <option value="{{ $penerimaanBarang['toko']['id'] }}" selected>{{ $penerimaanBarang['toko']['nama_toko'] }}</option>
+                    @else
+                      <option value=""></option>
+                    @endif
                   </select>
                 </div>
                 <div class="text-danger text-xs">
@@ -28,6 +32,11 @@
                 <label for="id_gudang">Gudang : </label>
                 <div wire:ignore>
                   <select name="id_gudang" id="id_gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;">
+                    @if ($penerimaanBarang != null && isset($penerimaanBarang['gudang']) && $penerimaanBarang['gudang'] != null)
+                      <option value="{{ $penerimaanBarang['gudang']['id'] }}" selected>{{ $penerimaanBarang['gudang']['nama_gudang'] }}</option>
+                    @else
+                      <option value=""></option>
+                    @endif
                     <option value=""></option>
                   </select>
                 </div>
@@ -129,11 +138,32 @@
         </div>
         <div class="card-footer px-2 py-2">
           <div class="row">
-            <div class="col-md-5">
-              <button class="btn btn-success btn-block btn-sm" wire:click="dummy">
-                <i class="fa fa-plus"></i> &ensp; Buat Data Penerimaan Stok Barang
-              </button>
-            </div>
+            @if ($penerimaanBarang != null)
+              <div class="col-md-3">
+                <button class="btn btn-success btn-block btn-sm" wire:click="updateData">
+                  <i class="fa fa-check"></i> &ensp; Simpan Perubahan
+                </button>
+              </div>
+                @if ($dirty)
+                  <div class="col-md-3">
+                    <button class="btn btn-danger btn-block btn-sm" wire:click="resetInput">
+                      <i class="fa fa-undo"></i> &ensp; Reset Input
+                    </button>
+                  </div>
+                @else
+                  <div class="col-md-4">
+                    <button class="btn btn-info btn-block btn-sm" wire:click="confirmData">
+                      <i class="fa fa-check-circle"></i> &ensp; Konfirmasi Penerimaan Barang
+                    </button>
+                  </div>
+                @endif
+              @else
+              <div class="col-md-5">
+                <button class="btn btn-success btn-block btn-sm" wire:click="createData">
+                  <i class="fa fa-plus"></i> &ensp; Buat Data Penerimaan Stok Barang
+                </button>
+              </div>
+              @endif
           </div>
         </div>
       </div>
@@ -252,11 +282,16 @@
     });
 
     Livewire.on('setSelect2', function(data) {
-      if (data.option != null) {
-        var newOption = new Option(data.option.text, data.option.value, false, true);
-        $('#id_toko').append(newOption);
+      console.log(data);
+      if (data != null) {
+        $.each(data, function (index, value) { 
+          if (value.option != null) {
+            var newOption = new Option(value.option.text, value.option.value, false, true);
+            $('#' + value.selectId).append(newOption);
+          }
+          $('#' + value.selectId).val(value.value).trigger('change');
+        });
       }
-      $('#id_toko').val(data.value).trigger('change');
     });
 
     $('#resetBarang').on('click', function() {

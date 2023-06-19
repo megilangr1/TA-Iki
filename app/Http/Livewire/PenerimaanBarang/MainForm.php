@@ -10,6 +10,8 @@ use Livewire\Component;
 
 class MainForm extends Component
 {
+    public $penerimaanBarang = [];
+
     public $state = [];
     public $params = [
         'id' => null,
@@ -22,6 +24,7 @@ class MainForm extends Component
 
         'detail' => [],
     ];
+    public $dirty = false;
 
     public $barang = null;
 
@@ -31,6 +34,7 @@ class MainForm extends Component
 
     public function updatedState($value, $key)
     {
+        $this->dirty = true;
         if ($key == 'id_toko') {
             if ($this->state['id_toko'] != null) {
                 $this->emit('initSelect2Gudang', $this->state['id_toko']);
@@ -72,14 +76,49 @@ class MainForm extends Component
         }
     }
 
-    public function mount()
+    public function mount($id = null)
     {
         $this->state = $this->params;
+
+        if ($id != null) {
+            $this->getPenerimaan($id);
+        }
     }
 
     public function render()
     {
         return view('livewire.penerimaan-barang.main-form');
+    }
+
+    public function getPenerimaan($id)
+    {
+        try {
+            $getData = PenerimaanBarang::with([
+                'detail',
+                'detail.barang',
+                'toko',
+                'gudang'
+            ])->where('id', '=', $id)->firstOrFail();
+
+            $this->penerimaanBarang = $getData->toArray();
+
+            $this->state['id'] = $getData->id;
+            $this->state['id_toko'] = $getData->id_toko;
+            $this->state['id_gudang'] = $getData->id_gudang;
+            $this->state['tanggal_penerimaan'] = date('Y-m-d', strtotime($getData->tanggal_penerimaan));
+            $this->state['keterangan'] = $getData->keterangan;
+
+            foreach ($getData->detail as $key => $value) {
+                array_push($this->state['detail'], [
+                    'id_barang' => $value->id_barang,
+                    'nama_barang' => $value->barang->nama_barang,
+                    'jumlah' => $value->jumlah,
+                    'keterangan' => $value->keterangan,
+                ]);
+            }
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 
     public function removeDetail($key)
@@ -89,7 +128,7 @@ class MainForm extends Component
         }
     }
 
-    public function dummy()
+    public function createData()
     {
         $this->resetErrorBag();
         $this->validate([
@@ -132,5 +171,66 @@ class MainForm extends Component
         } catch (\Exception $e) {
             dd($e);
         }
+    }
+
+    public function resetInput()
+    {
+        $id = $this->penerimaanBarang;
+        $this->reset('dirty', 'state', 'penerimaanBarang');
+        $this->state = $this->params;
+        $this->getPenerimaan($id);
+    }
+    
+    public function updateData()
+    {
+        $this->resetErrorBag();
+        $this->validate([
+            'state.id_toko' => 'required|exists:tokos,id',
+            'state.id_gudang' => 'required|exists:gudangs,id',
+            'state.tanggal_penerimaan' => 'required|date',
+            'state.keterangan' => 'nullable|string',
+            
+            'state.detail' => 'required|array',
+            'state.detail.*.id_barang' => 'required|exists:barangs,id',
+            'state.detail.*.jumlah' => 'required|numeric|min:1',
+            'state.detail.*.keterangan' => 'nullable|string',
+        ], [
+            'required' => 'Input / Data Tidak Boleh Kosong !',
+            'date' => 'Format Input Harus Berupa Tanggal !',
+        ]);
+        
+        DB::beginTransaction();
+        try {
+            $getHeader = PenerimaanBarang::where('id', '=', $this->penerimaanBarang['id'])->firstOrFail();
+
+            $updateHeader = $getHeader->update([
+                'id_toko' => $this->state['id_toko'],
+                'id_gudang' => $this->state['id_gudang'],
+                'tanggal_penerimaan' => date('Y-m-d', strtotime($this->state['tanggal_penerimaan'])),
+                'keterangan' => $this->state['keterangan'],
+                'status' => false,
+            ]);
+            $deleteDetail = $getHeader->detail()->delete();
+
+            foreach ($this->state['detail'] as $key => $value) {
+                $insertDetail = PenerimaanBarangDetail::create([
+                    'id_penerimaan_barang' => $getHeader->id,
+                    'id_barang' => $value['id_barang'],
+                    'jumlah' => $value['jumlah'],
+                    'keterangan' => $value['keterangan'],
+                ]);
+            }
+
+            DB::commit();
+            session()->flash('success', 'Perubahan Data Transaksi Penerimaan Berhasil di-Simpan !');
+            return redirect()->route('penerimaan-barang.index');
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    public function dummy()
+    {
+        dd($this->state);
     }
 }

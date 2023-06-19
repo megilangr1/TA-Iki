@@ -16,4 +16,9 @@ class PenerimaanBarangDetail extends Model
         'jumlah',
         'keterangan',
     ];
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'id_barang', 'id');
+    }
 }

@@ -52,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('penerimaan-barang')->name('penerimaan-barang.')->group(function() {
         Route::get('/', PenerimaanBarangMainIndex::class)->name('index');
         Route::get('/create', PenerimaanBarangMainForm::class)->name('create');
+        Route::get('/{id}/detail', PenerimaanBarangMainForm::class)->name('detail');
     });
 });
 

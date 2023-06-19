@@ -18,4 +18,19 @@ class PenerimaanBarang extends Model
         'keterangan',
         'status',
     ];
+
+    public function detail()
+    {
+        return $this->hasMany(PenerimaanBarangDetail::class, 'id_penerimaan_barang', 'id');
+    }
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'id_toko', 'id');
+    }
+
+    public function gudang()
+    {
+        return $this->belongsTo(Gudang::class, 'id_gudang', 'id');
+    }
 }
