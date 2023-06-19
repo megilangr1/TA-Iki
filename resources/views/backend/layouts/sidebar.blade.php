@@ -39,8 +39,8 @@
       </ul>
     </li>
 
-    {{-- <li class="nav-item {{ (request()->is('akun*')) || (request()->is('roles*')) ? 'menu-open' : '' }}">
-      <a href="#" class="nav-link {{ (request()->is('akun*')) || (request()->is('roles*')) ? 'active' : '' }}">
+    <li class="nav-item {{ (request()->is('master-akun*')) ? 'menu-open' : '' }}">
+      <a href="#" class="nav-link {{ (request()->is('master-akun*')) ? 'active' : '' }}">
         <i class="nav-icon fas fa-users text-secondary"></i>
         <p>
           Master Akun
@@ -49,18 +49,12 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
-          <a href="{{ route('roles.index') }}" class="nav-link {{ (request()->routeIs('roles*')) ? 'active':'' }}">
-            <i class="fas fa-user-shield nav-icon"></i>
-            <p>Hak Akses Akun</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="{{ route('akun.index') }}" class="nav-link {{ (request()->routeIs('akun*')) ? 'active':'' }}">
-            <i class="fas fa-users-cog nav-icon"></i>
+          <a href="{{ route('master-akun.pegawai') }}" class="nav-link">
+              <i class="fas fa-users-cog nav-icon"></i>
             <p>Akun Pegawai</p>
           </a>
         </li>
       </ul>
-    </li> --}}
+    </li>
   </ul>
 </nav>

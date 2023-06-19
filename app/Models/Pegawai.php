@@ -15,4 +15,12 @@ class Pegawai extends Model
         'nama_pegawai',
         'id_user'
     ];
+
+    public function user() {
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+
+    public function toko() {
+        return $this->belongsTo(Toko::class, 'id_toko', 'id');
+    }
 }
