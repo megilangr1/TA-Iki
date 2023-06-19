@@ -38,6 +38,23 @@
         </li>
       </ul>
     </li>
+    <li class="nav-item">
+      <a href="#" class="nav-link">
+        <i class="nav-icon fa fa-check-circle text-secondary"></i>
+        <p>
+          Transaksi
+          <i class="fas fa-angle-left right"></i>
+        </p>
+      </a>
+      <ul class="nav nav-treeview">
+        <li class="nav-item">
+          <a href="{{ route('penerimaan-barang.index') }}" class="nav-link">
+            <i class="fas fa-sign-in-alt text-sm nav-icon"></i>
+            <p>Penerimaan Barang</p>
+          </a>
+        </li>
+      </ul>
+    </li>
 
     <li class="nav-item {{ (request()->is('master-akun*')) ? 'menu-open' : '' }}">
       <a href="#" class="nav-link {{ (request()->is('master-akun*')) ? 'active' : '' }}">

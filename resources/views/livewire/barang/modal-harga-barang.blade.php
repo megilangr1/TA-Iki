@@ -50,9 +50,9 @@
                     <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('40')">40%</button>
                     <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('50')">50%</button>
                   </span>
-                </div>
-                <div class="invalid-feedback">
-                  {{ $errors->first('state.diskon') }}
+                  <div class="invalid-feedback">
+                    {{ $errors->first('state.diskon') }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -126,12 +126,12 @@
                   </tr>
                 @empty
                   <tr>
-                    <td class="align-middle text-center p-2" colspan="5"> - Belum Ada Data Gudang - </td>
+                    <td class="align-middle text-center p-2" colspan="6"> - Belum Ada Data Gudang - </td>
                   </tr>
                 @endforelse
               @else
                 <tr>
-                  <td class="align-middle text-center p-2" colspan="5"> - Silahkan Pilih Ulang Toko - </td>
+                  <td class="align-middle text-center p-2" colspan="6"> - Silahkan Pilih Ulang Toko - </td>
                 </tr>
               @endif
             </tbody>

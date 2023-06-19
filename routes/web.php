@@ -5,6 +5,8 @@ use App\Http\Controllers\MainController;
 use App\Http\Livewire\Barang\MainIndex as BarangMainIndex;
 use App\Http\Livewire\Kategori\MainIndex as KategoriMainIndex;
 use App\Http\Livewire\Pegawai\MainIndex as PegawaiMainIndex;
+use App\Http\Livewire\PenerimaanBarang\MainIndex as PenerimaanBarangMainIndex;
+use App\Http\Livewire\PenerimaanBarang\MainForm as PenerimaanBarangMainForm;
 use App\Http\Livewire\Toko\MainIndex as TokoMainIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -40,5 +42,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kategori', [AjaxDataController::class, 'dataKategori'])->name('kategori');
     Route::get('/toko', [AjaxDataController::class, 'dataToko'])->name('toko');
   });
+    Route::prefix('ajax')->name('ajax.')->middleware(['auth'])->group(function () {
+        Route::get('/kategori', [AjaxDataController::class, 'dataKategori'])->name('kategori');
+        Route::get('/toko', [AjaxDataController::class, 'dataToko'])->name('toko');
+        Route::get('/gudang', [AjaxDataController::class, 'dataGudang'])->name('gudang');
+        Route::get('/barang', [AjaxDataController::class, 'dataBarang'])->name('barang');
+    });
+
+    Route::prefix('penerimaan-barang')->name('penerimaan-barang.')->group(function() {
+        Route::get('/', PenerimaanBarangMainIndex::class)->name('index');
+        Route::get('/create', PenerimaanBarangMainForm::class)->name('create');
+    });
 });
 
