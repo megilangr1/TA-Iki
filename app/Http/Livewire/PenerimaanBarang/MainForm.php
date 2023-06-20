@@ -5,6 +5,7 @@ namespace App\Http\Livewire\PenerimaanBarang;
 use App\Models\Barang;
 use App\Models\PenerimaanBarang;
 use App\Models\PenerimaanBarangDetail;
+use App\Models\StokBarang;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -55,6 +56,7 @@ class MainForm extends Component
     public function updatedBarang($id)
     {
         if ($id != null) {
+            $this->dirty = true;
             try {
                 $getData = Barang::where('id', '=', $id)->firstOrFail();
 
@@ -79,7 +81,6 @@ class MainForm extends Component
     public function mount($id = null)
     {
         $this->state = $this->params;
-
         if ($id != null) {
             $this->getPenerimaan($id);
         }
@@ -109,12 +110,12 @@ class MainForm extends Component
             $this->state['keterangan'] = $getData->keterangan;
 
             foreach ($getData->detail as $key => $value) {
-                array_push($this->state['detail'], [
+                $this->state['detail'][$value->id_barang] = [
                     'id_barang' => $value->id_barang,
                     'nama_barang' => $value->barang->nama_barang,
                     'jumlah' => $value->jumlah,
                     'keterangan' => $value->keterangan,
-                ]);
+                ];
             }
         } catch (\Exception $e) {
             dd($e);
@@ -225,6 +226,42 @@ class MainForm extends Component
             session()->flash('success', 'Perubahan Data Transaksi Penerimaan Berhasil di-Simpan !');
             return redirect()->route('penerimaan-barang.detail', $getHeader->id);
         } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+    public function confirmData()
+    {
+        DB::beginTransaction();
+        try {
+            $getHeader = PenerimaanBarang::whereHas('detail')
+                ->whereHas('gudang')
+                ->whereHas('toko')
+                ->where('id', '=', $this->penerimaanBarang['id'])
+                ->firstOrFail();
+
+            $insertData = [];
+            foreach ($getHeader->detail as $key => $value) {
+                $insertData[] = [
+                    'id_transaksi' => $getHeader->id,
+                    'id_transaksi_detail' => $value->id,
+                    'id_toko' => $getHeader->id_toko,
+                    'id_gudang' => $getHeader->id_gudang,
+                    'id_barang' => $value->id_barang,
+                    'nominal_stok' => $value->jumlah,
+                    'perubahan_stok' => $value->jumlah,
+                ];
+            }
+
+            $insertStok = StokBarang::insert($insertData);
+            $updateHeader = $getHeader->update([
+                'status' => true
+            ]);
+            DB::commit();
+            $this->emit('success', 'Transaksi Penerimaan Barang di-Konfirmasi !');
+            return redirect()->route('penerimaan-barang.detail', $getHeader->id);
+        } catch (\Exception $e) {
+            DB::rollBack();
             dd($e);
         }
     }
