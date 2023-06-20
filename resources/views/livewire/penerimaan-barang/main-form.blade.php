@@ -300,4 +300,40 @@
 
   });
 </script>
+
+@if ($penerimaanBarang != null)
+<script>
+$(document).ready(function () {
+  var id_toko = "{{ $penerimaanBarang['id_toko'] }}";
+  $('#id_gudang').select2('destroy');
+
+  $('#id_gudang').select2({
+    ajax: {
+      url: "{{ route('ajax.gudang') }}",
+      dataType: "json",
+      type: "GET",
+      delay: 500,
+      data: function (params) {
+        var query = {
+          search: params.term,
+          id_toko: id_toko
+        }
+
+        return query;
+      },
+      processResults: function (data) {
+        return {
+          results: $.map(data, function (item) {
+            return {
+              text: item.nama_gudang,
+              id: item.id
+            }
+          })
+        };
+      }
+    }
+  });
+});
+</script>
+@endif
 @endpush

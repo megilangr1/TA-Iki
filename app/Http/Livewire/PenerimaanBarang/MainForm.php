@@ -167,7 +167,7 @@ class MainForm extends Component
 
             DB::commit();
             session()->flash('success', 'Data Transaksi Penerimaan Berhasil di-Buat !');
-            return redirect()->route('penerimaan-barang.index');
+            return redirect()->route('penerimaan-barang.detail', $insertHeader->id);
         } catch (\Exception $e) {
             dd($e);
         }
@@ -223,7 +223,7 @@ class MainForm extends Component
 
             DB::commit();
             session()->flash('success', 'Perubahan Data Transaksi Penerimaan Berhasil di-Simpan !');
-            return redirect()->route('penerimaan-barang.index');
+            return redirect()->route('penerimaan-barang.detail', $getHeader->id);
         } catch (\Exception $e) {
             dd($e);
         }
