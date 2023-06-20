@@ -1,21 +1,23 @@
 <div>
-  <div wire:ignore.self class="modal fade" id="modal-harga-barang" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal-harga-barangLabel" aria-hidden="true">
+  <div wire:ignore.self class="modal fade" id="modal-stok-barang" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal-stok-barangLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content" style="background-clip: border-box !important;">
         <div class="modal-header" wire:click="$refresh">
-          <h5 class="modal-title" id="modal-harga-barangLabel"><i class="fas fa-table"></i> &ensp; Harga Barang - {{ $barang != null ? $barang['nama_barang'] : '-' }} </h5>
+          <h5 class="modal-title" id="modal-stok-barangLabel"><i class="fas fa-table"></i> &ensp; Harga Barang - {{ $barang != null ? $barang['nama_barang'] : '-' }} </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-4">
+              Test
+            </div>
+          </div>
+        </div>
         <div class="modal-body p-0 text-sm">
           <h6 class="font-weight-bold bg-secondary mb-0 p-3">
-            List Harga Barang 
-            <div class="float-right">
-              <button class="btn btn-success btn-xs px-3" wire:click="showForm(true)">
-                <i class="fa fa-plus"></i> &ensp; Tambah Data
-              </button>
-            </div>
+            List Stok Barang
           </h6>
         </div>
         <div class="modal-body p-0 text-xs table-responsive">
@@ -98,8 +100,8 @@
 @push('script')
 <script>
   $(document).ready(function () {
-    Livewire.on('harga-barang-modal', function(val) {
-      $('#modal-harga-barang').modal(val);
+    Livewire.on('stok-barang-modal', function(val) {
+      $('#modal-stok-barang').modal(val);
     });
   });
 </script>

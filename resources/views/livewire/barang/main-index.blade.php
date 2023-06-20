@@ -96,6 +96,9 @@
                       <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('barang.modal-harga-barang', 'openModalHargaBarang', '{{ $item->id }}')">
                         <i class="fa fa-money-bill"></i>
                       </button>
+                      <button class="btn btn-primary btn-xs px-3" wire:click="$emitTo('barang.modal-stok-barang', 'openModalStokBarang', '{{ $item->id }}')">
+                        <i class="fa fa-boxes"></i>
+                      </button>
                       <button class="btn btn-xs btn-warning px-3" wire:click="editData('{{ $item->id }}')">
                         <i class="fa fa-edit"></i>
                       </button>
@@ -128,6 +131,7 @@
 
   @livewire('component.modal-trashed-data', ['modelName' => 'barang'])
   @livewire('barang.modal-harga-barang')
+  @livewire('barang.modal-stok-barang')
 </div>
 
 @push('css')
