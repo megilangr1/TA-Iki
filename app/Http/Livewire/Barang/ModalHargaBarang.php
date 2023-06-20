@@ -22,7 +22,7 @@ class ModalHargaBarang extends Component
     ];
 
     protected $listeners = [
-        'openGudangModal'
+        'openModalHargaBarang'
     ];
 
     public function updatedState($value, $key)
@@ -56,7 +56,7 @@ class ModalHargaBarang extends Component
         return view('livewire.barang.modal-harga-barang');
     }
 
-    public function openGudangModal($id)
+    public function openModalHargaBarang($id)
     {
         $this->reset('barang', 'state');
         $this->state = $this->params;

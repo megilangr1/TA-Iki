@@ -18,7 +18,7 @@
                 <th class="align-middle p-2 text-center" width="15%">Tanggal Penerimaan</th>
                 <th class="align-middle p-2 text-center" width="15%">Lokasi</th>
                 <th class="align-middle p-2 text-center">Jumlah Barang</th>
-                <th class="align-middle p-2 text-center">Status</th>
+                <th class="align-middle p-2 text-center" width="20%">Status</th>
                 <th class="align-middle p-2 text-center" width="10%">Aksi</th>
               </tr>
             </thead>
@@ -34,9 +34,15 @@
                   </td>
                   <td class="align-middle p-2 text-center font-weight-bold">{{ $item->detail()->count() }} Jenis Barang</td>
                   <td class="align-middle p-2 text-center font-weight-bold">
-                    <span class="btn btn-block btn-warning btn-xs">
-                      Belum Valid
-                    </span>
+                    @if ($item->status)
+                      <span class="btn btn-block btn-success btn-xs font-weight-bold">
+                        Valid <br> Stok Tercatat
+                      </span>
+                    @else
+                      <span class="btn btn-block btn-warning btn-xs">
+                        Belum Valid
+                      </span>
+                    @endif
                   </td>
                   <td class="align-middle p-2 text-center">
                     <div class="btn-group">
