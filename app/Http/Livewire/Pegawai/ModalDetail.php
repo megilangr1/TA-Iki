@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pegawai;
 
+use App\Models\Pegawai;
 use Livewire\Component;
 
 class ModalDetail extends Component
@@ -10,26 +11,10 @@ class ModalDetail extends Component
     public $pegawai = [];
 
     public $form = false;
-    public $state = [];
-    public $params = [
-        'id' => null,
-        'id_user' => null,
-        'nama_pegawai' => null,
-        
-        'id_toko' => null,
 
-        'email' => null,
-        'password' => null,
-        'password_confirmation' => null,
-    ];
     protected $listeners = [
         'openDetailModal'
     ];
-
-    public function mount()
-    {
-        $this->state = $this->params;
-    }
 
     public function render()
     {
@@ -38,6 +23,24 @@ class ModalDetail extends Component
 
     public function openDetailModal($id)
     {
-        
+        $this->getPegawai($id);
+
+        $this->emit('modal-detail', 'show');
+    }
+
+    public function getPegawai($id)
+    {
+        try {
+            $getPegawai = Pegawai::with('user', 'toko')->where('id', '=' , $id)->firstOrFail();
+            $this->pegawai = $getPegawai->toArray();
+        } catch (\Exception $e) {
+            dd($e);
+            $this->emit('error', 'Terjadi Kesalahan ! <br> Silahkan Hubungi Administrator !');
+        }
+    }
+
+    public function dummy()
+    {
+        dd($this->pegawai);
     }
 }

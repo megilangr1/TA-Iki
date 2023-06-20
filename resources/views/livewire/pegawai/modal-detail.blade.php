@@ -1,141 +1,145 @@
 <div>
-  <div wire:ignore.self class="modal fade" id="modal-harga-barang" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal-harga-barangLabel" aria-hidden="true">
+  <div wire:ignore.self class="modal fade" id="modal-detail" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="modal-detailLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content" style="background-clip: border-box !important;">
         <div class="modal-header" wire:click="$refresh">
-          <h5 class="modal-title" id="modal-harga-barangLabel"><i class="fas fa-table"></i> &ensp; Harga Barang - {{ $barang != null ? $barang['nama_barang'] : '-' }} </h5>
+          <h5 class="modal-title" id="modal-detailLabel"><i class="fas fa-table"></i> &ensp; Detail Pegawai - {{ $pegawai != null ? $pegawai['nama_pegawai'] : '-' }} </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body py-2 px-3 text-sm {{ $form ? 'd-block':'d-none' }}">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="tanggal_harga">Tanggal Harga : <i class="text-danger">*</i></label>
-                <input type="date" wire:model="state.tanggal_harga" name="tanggal_harga" id="tanggal_harga" class="form-control form-control-sm {{ $errors->has('state.tanggal_harga') ? 'is-invalid':'' }}" placeholder="Masukan Tanggal Harga..." min="{{ date('Y-m-d') }}" required>
-                <div class="invalid-feedback">
-                  {{ $errors->first('state.tanggal_harga') }}
-                </div>
+        <div class="modal-body p-0">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-12 p-0 text-sm">
+                <ul class="nav nav-tabs" id="tab-detail-barang" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link active" wire:ignore.self id="tab-detail-barang-informasi-tab" data-toggle="pill" href="#tab-detail-barang-informasi" role="tab" aria-controls="tab-detail-barang-informasi" aria-selected="true">Informasi Utama</a>
+                  </li>
+                  @if (isset($detail['lokasi']) || isset($detail['tanda_batas_tanah']))
+                    <li class="nav-item">
+                      <a class="nav-link" wire:ignore.self id="tab-detail-barang-lokasi-tab" data-toggle="pill" href="#tab-detail-barang-lokasi" role="tab" aria-controls="tab-detail-barang-lokasi" aria-selected="false">Lokasi</a>
+                    </li>
+                  @endif
+                  @if (isset($detail['spesifikasi_lainnya']))
+                    <li class="nav-item">
+                      <a class="nav-link" wire:ignore.self id="tab-detail-barang-spesifikasi-lainnya-tab" data-toggle="pill" href="#tab-detail-barang-spesifikasi-lainnya" role="tab" aria-controls="tab-detail-barang-spesifikasi-lainnya" aria-selected="false">Spesifikasi Lainnya</a>
+                    </li>
+                  @endif
+                </ul>
               </div>
-            </div>
-            <div class="col-md-8">
-              <div class="form-group">
-                <label for="keterangan">Keterangan Tambahan :</label>
-                <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..."></textarea>
-                <div class="invalid-feedback">
-                  {{ $errors->first('state.keterangan') }}
-                </div>
+              <div class="col-12 p-0 text-sm">
+                <h6 class="bg-secondary text-white p-0 m-0" style="font-size: 3px !important;">&ensp;</h6>
               </div>
-            </div>
-            <div class="col-md-5">
-              <div class="form-group">
-                <label for="harga">Nominal Harga : <i class="text-danger">*</i></label>
-                <input type="text" wire:model="state.harga" name="harga" id="harga" class="form-control form-control-sm {{ $errors->has('state.harga') ? 'is-invalid':'' }}" placeholder="Masukan Nominal Harga..." onkeyup="return formatRupiah(event)" required>
-                <div class="invalid-feedback">
-                  {{ $errors->first('state.harga') }}
-                </div>
-              </div>
-            </div>
-            <div class="col-md-7">
-              
-              <div class="form-group">
-                <label for="diskon">Nominal Diskon (Fix) : <i class="text-danger">*</i></label>
-                <div class="input-group input-group-sm">
-                  <input type="text" wire:model="state.diskon" name="diskon" id="diskon" class="form-control form-control-sm {{ $errors->has('state.diskon') ? 'is-invalid':'' }}" placeholder="0" onkeyup="return formatRupiah(event)" required>
-                  <span class="input-group-append">
-                    <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('10')">10%</button>
-                    <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('20')">20%</button>
-                    <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('30')">30%</button>
-                    <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('40')">40%</button>
-                    <button type="button" class="btn btn-secondary btn-flat" wire:click="discount('50')">50%</button>
-                  </span>
-                  <div class="invalid-feedback">
-                    {{ $errors->first('state.diskon') }}
+              <div class="col-12">
+                <div class="tab-content" id="tab-detail-barangContent">
+                  <div class="tab-pane fade show active" wire:ignore.self id="tab-detail-barang-informasi" role="tabpanel" aria-labelledby="tab-detail-barang-informasi-tab">
+                    <div class="row">
+                      <div class="col-12 p-0 text-xs table-responsive">
+                        <table class="table table-hover m-0" style="min-width: 600px !important;">
+                          <tr class="bg-secondary">
+                            <th class="align-middle px-3 py-2" colspan="7">Informasi Detail Pegawai</th>
+                          </tr>
+                          <tr>
+                            <th class="align-middle px-3 py-2">Nama Pegawai</th>
+                            <th class="align-middle px-0 py-2 text-center">:</th>
+                            <th class="align-middle px-3 py-2">{{ $pegawai['nama_pegawai'] ?? '-' }}</th>
+                            <th></th>
+                            <th class="align-middle px-3 py-2">Toko</th>
+                            <th class="align-middle px-0 py-2 text-center">:</th>
+                            <th class="align-middle px-3 py-2">{{ $pegawai['toko']['nama_toko'] ?? '-' }}</th>
+                          </tr>
+                          <tr>
+                            <th class="align-top px-3 py-2" width="15%">Email Pegawai</th>
+                            <th class="align-top px-0 py-2 text-center" width="2%">:</th>
+                            <th class="align-middle px-3 py-2">{{ $pegawai['user']['email'] ?? '-' }}</th>
+                            <th></th>
+                            <th class="align-middle px-3 py-2">Tanggal Data Dibuat</th>
+                            <th class="align-middle px-0 py-2 text-center">:</th>
+                            <th class="align-middle px-3 py-2">{{ isset($pegawai['created_at']) && $pegawai['created_at'] != null ? date('d/m/Y', strtotime($pegawai['created_at'])) : '-' }}</th>
+                          </tr>
+                          </tr>  
+                        </table>
+                      </div>
+                    </div>
                   </div>
+                  @if (isset($detail['lokasi']) || isset($detail['tanda_batas_tanah']))
+                    <div class="tab-pane fade" wire:ignore.self id="tab-detail-barang-lokasi" role="tabpanel" aria-labelledby="tab-detail-barang-lokasi-tab">
+                      <div class="row">
+                        <div class="col-12 p-0 text-sm table-responsive">
+                          <table class="table table-hover m-0" style="min-width: 600px !important;">
+                            <tr class="bg-secondary">
+                              <th class="align-middle px-3 py-2" colspan="7">Informasi Lokasi</th>
+                            </tr>
+                            <tr>
+                              <th class="align-middle px-3 py-2" width="15%">Provinsi</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['provinsi']) && $detail['lokasi']['provinsi'] != null ? $detail['lokasi']['provinsi'] : '-' }}</th>
+                              <th></th>
+                              <th class="align-middle px-3 py-2" width="15%">Kabupaten / Kota</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['kabupaten_kota']) && $detail['lokasi']['kabupaten_kota'] != null ? $detail['lokasi']['kabupaten_kota'] : '-' }}</th>
+                            </tr>
+                            <tr>
+                              <th class="align-middle px-3 py-2" width="15%">Kecamatan</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['kecamatan']) && $detail['lokasi']['kecamatan'] != null ? $detail['lokasi']['provinsi'] : '-' }}</th>
+                              <th></th>
+                              <th class="align-middle px-3 py-2" width="15%">Kelurahan / Desa</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['kelurahan_desa']) && $detail['lokasi']['kelurahan_desa'] != null ? $detail['lokasi']['kabupaten_kota'] : '-' }}</th>
+                            </tr>
+                            <tr>
+                              <th class="align-middle px-3 py-2" width="15%">Alamat Jalan</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['jalan']) && $detail['lokasi']['jalan'] != null ? $detail['lokasi']['provinsi'] : '-' }}</th>
+                              <th></th>
+                              <th class="align-middle px-3 py-2" width="15%">RT / RW</th>
+                              <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                              <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['rt_rw']) && $detail['lokasi']['rt_rw'] != null ? $detail['lokasi']['kabupaten_kota'] : '-' }}</th>
+                            </tr>
+                            @if (isset($detail['lokasi']['titik_koordinat']) && $detail['lokasi']['titik_koordinat'])
+                              <tr>
+                                <th class="align-middle px-3 py-2" width="15%">Titik Koordinat</th>
+                                <th class="align-middle px-0 py-2 text-center" width="2%">:</th>
+                                <th class="align-middle px-3 py-2" width="25%">{{ isset($detail['lokasi']['titik_koordinat']) && $detail['lokasi']['titik_koordinat'] != null ? $detail['lokasi']['provinsi'] : '-' }}</th>
+                                <th colspan="4"></th>
+                              </tr>
+                            @endif
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  @endif
+                  @if (isset($detail['spesifikasi_lainnya']))
+                    <div class="tab-pane fade" wire:ignore.self id="tab-detail-barang-spesifikasi-lainnya" role="tabpanel" aria-labelledby="tab-detail-barang-spesifikasi-lainnya-tab">
+                      <div class="row">
+                        <div class="col-12 p-0 text-sm table-responsive">
+                          <table class="table table-hover m-0" style="min-width: 600px !important;">
+                            <tr class="bg-secondary">
+                              <th class="align-middle px-3 py-2" colspan="3">Informasi Spesifikasi Lainnya</th>
+                            </tr>
+                            <tr>
+                              <th class="align-middle px-3 py-2 text-center" width="5%">No.</th>
+                              <th class="align-middle px-3 py-2">Nama Spesifikasi</th>
+                              <th class="align-middle px-3 py-2">Keterangan Spesifikasi</th>
+                            </tr>
+                            @foreach ($detail['spesifikasi_lainnya'] as $item)
+                              <tr>
+                                <td class="align-middle px-3 py-1 text-center">{{ $loop->iteration }}</td>
+                                <td class="align-middle px-3 py-1">{{ $item['nama_spesifikasi'] }}</td>
+                                <td class="align-middle px-3 py-1">{{ $item['keterangan_spesifikasi'] }}</td>
+                              </tr>
+                            @endforeach
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  @endif
                 </div>
               </div>
-            </div>
-            {{-- <div class="col-md-4">
-              <div class="form-group">
-                <label for="diskon_range">Persentase Diskon ({{ $state['diskon_range'] . '%' }})</label>
-                <input type="range" wire:model="state.diskon_range" class="form-control form-control-sm" id="diskon_range">
-              </div>
-            </div> --}}
-            <div class="col-md-3">
-              <button class="btn btn-success btn-xs btn-block" wire:click="{{ $state['id'] != null ? 'updateData':'createData' }}">
-                <i class="fa fa-plus"></i> &ensp; {{ $state['id'] != null ? 'Simpan Data':'Buat Data' }}
-              </button>
-            </div>
-            <div class="col-md-3">
-              <button class="btn btn-danger btn-xs btn-block" wire:click="showForm(false)">
-                <i class="fa fa-times"></i> &ensp; Batalkan Input Data
-              </button>
-            </div>
-            <div class="col-12">
             </div>
           </div>
-        </div>
-        <div class="modal-body p-0 text-sm">
-          <h6 class="font-weight-bold bg-secondary mb-0 p-3">
-            List Harga Barang 
-            <div class="float-right">
-              <button class="btn btn-success btn-xs px-3" wire:click="showForm(true)">
-                <i class="fa fa-plus"></i> &ensp; Tambah Data
-              </button>
-            </div>
-          </h6>
-        </div>
-        <div class="modal-body p-0 text-xs table-responsive">
-          <table class="table table-bordered mb-0">
-            <thead>
-              <tr>
-                <th class="align-middle p-2 text-center" width="10%">No.</th>
-                <th class="align-middle p-2 text-center" width="15%">Tanggal Harga</th>
-                <th class="align-middle p-2">Harga</th>
-                <th class="align-middle p-2">Diskon</th>
-                <th class="align-middle p-2">Keterangan</th>
-                <th class="align-middle p-2 text-center" width="10%">#</th>
-              </tr>
-            </thead>
-            <tbody>
-              @if ($barang != null && isset($barang['harga_with_trashed']))
-                @forelse ($barang['harga_with_trashed'] as $item)
-                  <tr>
-                    <td class="align-middle px-2 py-1 text-center">{{ $loop->iteration }}.</td>
-                    <td class="align-middle px-2 py-1 text-center font-weight-bold">{{ date('d/m/Y', strtotime($item['tanggal_harga'])) }}</td>
-                    <td class="align-middle px-2 py-1">Rp. {{ number_format($item['harga'], 2, ',', '.') }}</td>
-                    <td class="align-middle px-2 py-1">Rp. {{ number_format($item['diskon'], 2, ',', '.') }}</td>
-                    <td class="align-middle px-2 py-1">{{ $item['keterangan'] != null ? $item['keterangan'] : '-' }}</td>
-                    <td class="align-middle px-2 py-1 text-center">
-                      <div class="btn-group">
-                        @if ($item['deleted_at'] != null)
-                          <button class="btn btn-info btn-xs px-4" wire:click="restoreData('{{ $item['id'] }}')">
-                            <i class="fa fa-undo"></i>
-                          </button>
-                        @else
-                        <button class="btn btn-warning btn-xs px-3" wire:click="editData('{{ $item['id'] }}')">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                          <button class="btn btn-danger btn-xs px-3" wire:click="deleteData('{{ $item['id'] }}')">
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        @endif
-                      </div>
-                    </td>
-                  </tr>
-                @empty
-                  <tr>
-                    <td class="align-middle text-center p-2" colspan="6"> - Belum Ada Data Gudang - </td>
-                  </tr>
-                @endforelse
-              @else
-                <tr>
-                  <td class="align-middle text-center p-2" colspan="6"> - Silahkan Pilih Ulang Toko - </td>
-                </tr>
-              @endif
-            </tbody>
-          </table>
         </div>
         <div class="modal-footer text-sm">
           <button class="btn btn-primary" wire:click="$refresh">
@@ -166,8 +170,8 @@
 @push('script')
 <script>
   $(document).ready(function () {
-    Livewire.on('harga-barang-modal', function(val) {
-      $('#modal-harga-barang').modal(val);
+    Livewire.on('modal-detail', function(val) {
+      $('#modal-detail').modal(val);
     });
   });
 </script>
