@@ -93,7 +93,7 @@
                   <td class="align-middle py-1 px-2">{{ $item->keterangan != null ? $item->keterangan : '-' }}</td>
                   <td class="align-middle py-1 px-2 text-center">
                     <div class="btn-group">
-                      <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('barang.modal-harga-barang', 'openGudangModal', '{{ $item->id }}')">
+                      <button class="btn btn-info btn-xs px-3" wire:click="$emitTo('barang.modal-harga-barang', 'openModalHargaBarang', '{{ $item->id }}')">
                         <i class="fa fa-money-bill"></i>
                       </button>
                       <button class="btn btn-xs btn-warning px-3" wire:click="editData('{{ $item->id }}')">
