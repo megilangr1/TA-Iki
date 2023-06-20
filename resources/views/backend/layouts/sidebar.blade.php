@@ -2,6 +2,14 @@
   <ul class="nav nav-pills nav-sidebar flex-column nav-legacy nav-child-indent" data-widget="treeview" role="menu" data-accordion="false">
     <li class="nav-header">NAVIGASI PROGRAM</li>
     <li class="nav-item">
+      <a href="{{ route('pos.index') }}" class="nav-link {{ (request()->is('pos')) ? 'active':'' }}">
+        <i class="nav-icon fas fa-shopping-cart text-info"></i>
+        <p>
+          POS
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="{{ route('backend.main') }}" class="nav-link {{ (request()->is('backend')) ? 'active':'' }}">
         <i class="nav-icon fa fa-home text-info"></i>
         <p>
@@ -55,6 +63,7 @@
         </li>
       </ul>
     </li>
+    
 
     <li class="nav-item {{ (request()->is('master-akun*')) ? 'menu-open' : '' }}">
       <a href="#" class="nav-link {{ (request()->is('master-akun*')) ? 'active' : '' }}">

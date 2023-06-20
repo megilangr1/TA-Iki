@@ -7,6 +7,7 @@ use App\Http\Livewire\Kategori\MainIndex as KategoriMainIndex;
 use App\Http\Livewire\Pegawai\MainIndex as PegawaiMainIndex;
 use App\Http\Livewire\PenerimaanBarang\MainIndex as PenerimaanBarangMainIndex;
 use App\Http\Livewire\PenerimaanBarang\MainForm as PenerimaanBarangMainForm;
+use App\Http\Livewire\Pos\MainIndex as PosMainIndex;
 use App\Http\Livewire\Toko\MainIndex as TokoMainIndex;
 use Illuminate\Support\Facades\Route;
 
@@ -53,6 +54,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', PenerimaanBarangMainIndex::class)->name('index');
         Route::get('/create', PenerimaanBarangMainForm::class)->name('create');
         Route::get('/{id}/detail', PenerimaanBarangMainForm::class)->name('detail');
+    });
+
+    Route::prefix('pos')->name('pos.')->group(function() {
+        Route::get('/', PosMainIndex::class)->name('index');
     });
 });
 
