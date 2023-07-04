@@ -10,6 +10,15 @@
         </div>
         <div class="card-body text-sm p-0">
           <div class="row px-3 py-2">
+            @if ($penerimaanBarang == null)
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button class="btn btn-block btn-xs btn-outline-info">
+                    <i class="fa fa-truck"></i> &ensp; Pilih Pengiriman
+                  </button>
+                </div>
+              </div>
+            @endif
             <div class="col-md-4">
               <div class="form-group">
                 <label for="id_toko">Toko : </label>
@@ -45,16 +54,6 @@
                 </div>
               </div>
             </div>
-            @if ($penerimaanBarang == null)
-              <div class="col-md-4">
-                <div class="form-group">
-                  <label class="d-none d-md-block">&ensp;</label>
-                  <button class="btn btn-block btn-xs btn-info">
-                    <i class="fa fa-truck"></i> &ensp; Pilih Pengiriman
-                  </button>
-                </div>
-              </div>
-            @endif
             <div class="col-md-4">
               <div class="form-group">
                 <label for="tanggal_penerimaan">Tanggal Penerimaan : </label>
@@ -64,7 +63,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-md-{{ $penerimaanBarang != null && $penerimaanBarang['status'] == true ? '12':'8' }}">
+            <div class="col-md-12">
               <div class="form-group">
                 <label for="keterangan">Keterangan : </label>
                 <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Penerimaan / Asal Penerimaan" {{ $penerimaanBarang != null && $penerimaanBarang['status'] == true ? 'disabled':'' }}></textarea>
@@ -103,7 +102,7 @@
                     <th class="align-middle p-2">Nama Barang</th>
                     <th class="align-middle p-2 text-center" width="10%">Jumlah</th>
                     <th class="align-middle p-2" width="40%">Keterangan</th>
-                    @if ($penerimaanBarang == null)
+                    @if ($penerimaanBarang == null || ($penerimaanBarang != null && $penerimaanBarang['status'] == false))
                       <th class="align-middle p-2 text-center" width="5%">#</th>
                     @endif
                   </tr>
@@ -126,7 +125,7 @@
                       <td class="align-middle p-1">
                         <textarea wire:model="state.detail.{{ $key }}.keterangan" name="keterangan_{{ $key }}" id="keterangan_{{ $key }}" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.detail.' . $key . '.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..." {{ $penerimaanBarang != null && $penerimaanBarang['status'] == true ? 'disabled':'' }}></textarea>
                       </td>
-                      @if ($penerimaanBarang == null)
+                      @if ($penerimaanBarang == null || ($penerimaanBarang != null && $penerimaanBarang['status'] == false))
                       <td class="align-middle p-1 text-center">
                         <button class="btn btn-danger btn-xs px-3" wire:click="removeDetail('{{ $key }}')">
                           <i class="fa fa-trash"></i>

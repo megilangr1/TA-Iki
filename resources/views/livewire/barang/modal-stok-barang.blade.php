@@ -3,69 +3,83 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content" style="background-clip: border-box !important;">
         <div class="modal-header" wire:click="$refresh">
-          <h5 class="modal-title" id="modal-stok-barangLabel"><i class="fas fa-table"></i> &ensp; Harga Barang - {{ $barang != null ? $barang['nama_barang'] : '-' }} </h5>
+          <h5 class="modal-title" id="modal-stok-barangLabel"><i class="fas fa-table"></i> &ensp; Daftar Stok {{ $barang['nama_barang'] ?? '' }} </h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body py-1">
           <div class="row">
             <div class="col-md-4">
-              Test
+              <div class="form-group">
+                <label for="toko">Toko : </label>
+                <div wire:ignore>
+                  <select name="toko" id="toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="gudang">Gudang : </label>
+                <div wire:ignore>
+                  <select name="gudang" id="gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;">
+                    <option value=""></option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="d-none d-md-block">&ensp;</label>
+                <button class="btn btn-block btn-sm btn-outline-info" wire:click="loadStok">
+                  Load Data
+                </button>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label class="d-none d-md-block">&ensp;</label>
+                <button class="btn btn-block btn-sm btn-danger" wire:click="loadAllStok">
+                  Reset
+                </button>
+              </div>
             </div>
           </div>
         </div>
-        <div class="modal-body p-0 text-sm">
-          <h6 class="font-weight-bold bg-secondary mb-0 p-3">
-            List Stok Barang
-          </h6>
-        </div>
-        <div class="modal-body p-0 text-xs table-responsive">
+        <div class="modal-body p-0 table-responsive text-sm">
           <table class="table table-bordered mb-0">
             <thead>
               <tr>
-                <th class="align-middle p-2 text-center" width="10%">No.</th>
-                <th class="align-middle p-2 text-center" width="15%">Tanggal Harga</th>
-                <th class="align-middle p-2">Harga</th>
-                <th class="align-middle p-2">Diskon</th>
-                <th class="align-middle p-2">Keterangan</th>
-                <th class="align-middle p-2 text-center" width="10%">#</th>
+                <th class="align-middle px-3 py-1 text-center" width="5%">No.</th>
+                <th class="align-middle px-3 py-1">Lokasi</th>
+                <th class="align-middle px-3 py-1 text-center">Stok</th>
               </tr>
             </thead>
             <tbody>
-              @if ($barang != null && isset($barang['harga_with_trashed']))
-                @forelse ($barang['harga_with_trashed'] as $item)
+              @if (isset($stokData['data']))
+                @forelse ($stokData['data'] as $item)
                   <tr>
-                    <td class="align-middle px-2 py-1 text-center">{{ $loop->iteration }}.</td>
-                    <td class="align-middle px-2 py-1 text-center font-weight-bold">{{ date('d/m/Y', strtotime($item['tanggal_harga'])) }}</td>
-                    <td class="align-middle px-2 py-1">Rp. {{ number_format($item['harga'], 2, ',', '.') }}</td>
-                    <td class="align-middle px-2 py-1">Rp. {{ number_format($item['diskon'], 2, ',', '.') }}</td>
-                    <td class="align-middle px-2 py-1">{{ $item['keterangan'] != null ? $item['keterangan'] : '-' }}</td>
-                    <td class="align-middle px-2 py-1 text-center">
-                      <div class="btn-group">
-                        @if ($item['deleted_at'] != null)
-                          <button class="btn btn-info btn-xs px-4" wire:click="restoreData('{{ $item['id'] }}')">
-                            <i class="fa fa-undo"></i>
-                          </button>
-                        @else
-                        <button class="btn btn-warning btn-xs px-3" wire:click="editData('{{ $item['id'] }}')">
-                          <i class="fa fa-edit"></i>
-                        </button>
-                          <button class="btn btn-danger btn-xs px-3" wire:click="deleteData('{{ $item['id'] }}')">
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        @endif
-                      </div>
-                    </td>
+                    <td class="align-middle px-3 py-1 text-center">{{ $loop->iteration }}.</td>
+                    <td class="align-middle px-3 py-1">{{ $item['toko']['nama_toko'] . ' - ' . $item['gudang']['nama_gudang'] }}</td>
+                    <td class="align-middle px-3 py-1 text-center font-weight-bold">{{ $item['perubahan_stok'] }} Buah</td>
                   </tr>
                 @empty
                   <tr>
-                    <td class="align-middle text-center p-2" colspan="6"> - Belum Ada Data Gudang - </td>
+                    <td colspan="3" class="align-middle px-3 py-1">Belum Ada Data</td>
                   </tr>
                 @endforelse
-              @else
+
+                @if (isset($stokData['totalStok']))
+                  <tr class="bg-secondary">
+                    <th colspan="2" class="align-middle px-3 py-1 text-right">Total : </th>
+                    <th class="align-middle px-3 py-1 text-center">{{ $stokData['totalStok'] }}</th>
+                  </tr>
+                @endif 
+              @else 
                 <tr>
-                  <td class="align-middle text-center p-2" colspan="6"> - Silahkan Pilih Ulang Toko - </td>
+                  <td colspan="3" class="align-middle px-3 py-1">Belum Ada Data</td>
                 </tr>
               @endif
             </tbody>
@@ -103,6 +117,86 @@
     Livewire.on('stok-barang-modal', function(val) {
       $('#modal-stok-barang').modal(val);
     });
+
+    $('#toko').select2({
+      ajax: {
+        url: "{{ route('ajax.toko') }}",
+        dataType: "json",
+        type: "GET",
+        delay: 500,
+        data: function (params) {
+          var query = {
+            search: params.term,
+          }
+
+          return query;
+        },
+        processResults: function (data) {
+          return {
+            results: $.map(data, function (item) {
+              return {
+                text: item.nama_toko,
+                id: item.id
+              }
+            })
+          };
+        }
+      }
+    });
+
+    $('#gudang').select2();
+    Livewire.on('initSelect2Gudang', function(data) {
+      $('#gudang').val('').trigger('change');
+      $('#gudang').select2('destroy');
+
+      $('#gudang').select2({
+        ajax: {
+          url: "{{ route('ajax.gudang') }}",
+          dataType: "json",
+          type: "GET",
+          delay: 500,
+          data: function (params) {
+            var query = {
+              search: params.term,
+              id_toko: data
+            }
+
+            return query;
+          },
+          processResults: function (data) {
+            return {
+              results: $.map(data, function (item) {
+                return {
+                  text: item.nama_gudang,
+                  id: item.id
+                }
+              })
+            };
+          }
+        }
+      });
+    });
+
+    $('#toko').on('change', function() {
+      @this.set('state.id_toko', $(this).val());
+    });
+
+    $('#gudang').on('change', function() {
+      @this.set('state.id_gudang', $(this).val());
+    });
+
+    Livewire.on('setSelect2', function(data) {
+      if (data != null) {
+        $.each(data, function (index, value) { 
+          if (value.option != null) {
+            var newOption = new Option(value.option.text, value.option.value, false, true);
+            $('#' + value.selectId).append(newOption);
+          }
+          $('#' + value.selectId).val(value.value).trigger('change');
+        });
+      }
+    });
+
   });
 </script>
 @endpush

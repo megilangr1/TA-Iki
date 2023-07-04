@@ -19,4 +19,19 @@ class StokBarang extends Model
         'nominal_stok',
         'perubahan_stok',
     ];
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'id_barang', 'id');
+    }
+
+    public function toko()
+    {
+        return $this->belongsTo(Toko::class, 'id_toko', 'id');
+    }
+
+    public function gudang()
+    {
+        return $this->belongsTo(Gudang::class, 'id_gudang', 'id');
+    }
 }

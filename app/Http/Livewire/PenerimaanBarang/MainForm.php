@@ -6,6 +6,7 @@ use App\Models\Barang;
 use App\Models\PenerimaanBarang;
 use App\Models\PenerimaanBarangDetail;
 use App\Models\StokBarang;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -163,6 +164,8 @@ class MainForm extends Component
                     'id_barang' => $value['id_barang'],
                     'jumlah' => $value['jumlah'],
                     'keterangan' => $value['keterangan'],
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
                 ]);
             }
 
@@ -219,6 +222,7 @@ class MainForm extends Component
                     'id_barang' => $value['id_barang'],
                     'jumlah' => $value['jumlah'],
                     'keterangan' => $value['keterangan'],
+                    'updated_at' => Carbon::now(),
                 ]);
             }
 

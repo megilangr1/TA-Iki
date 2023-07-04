@@ -21,8 +21,8 @@
             </div>
             <div class="col-md-8">
               <div class="form-group">
-                <label for="keterangan">Keterangan Tambahan :</label>
-                <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..."></textarea>
+                <label for="keterangan_harga">Keterangan Tambahan :</label>
+                <textarea wire:model="state.keterangan" name="keterangan_harga" id="keterangan_harga" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..."></textarea>
                 <div class="invalid-feedback">
                   {{ $errors->first('state.keterangan') }}
                 </div>
