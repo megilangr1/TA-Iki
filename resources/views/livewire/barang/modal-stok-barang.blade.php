@@ -8,46 +8,48 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body py-1">
-          <div class="row">
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="toko">Toko : </label>
-                <div wire:ignore>
-                  <select name="toko" id="toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;">
-                    <option value=""></option>
-                  </select>
+        @if ($showFilter)
+          <div class="modal-body py-1">
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="toko">Toko : </label>
+                  <div wire:ignore>
+                    <select name="toko" id="toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;">
+                      <option value=""></option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                <label for="gudang">Gudang : </label>
-                <div wire:ignore>
-                  <select name="gudang" id="gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;">
-                    <option value=""></option>
-                  </select>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="gudang">Gudang : </label>
+                  <div wire:ignore>
+                    <select name="gudang" id="gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;">
+                      <option value=""></option>
+                    </select>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label class="d-none d-md-block">&ensp;</label>
-                <button class="btn btn-block btn-sm btn-outline-info" wire:click="loadStok">
-                  Load Data
-                </button>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="d-none d-md-block">&ensp;</label>
+                  <button class="btn btn-block btn-sm btn-outline-info" wire:click="loadStok">
+                    Load Data
+                  </button>
+                </div>
               </div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group">
-                <label class="d-none d-md-block">&ensp;</label>
-                <button class="btn btn-block btn-sm btn-danger" wire:click="loadAllStok">
-                  Reset
-                </button>
+              <div class="col-md-2">
+                <div class="form-group">
+                  <label class="d-none d-md-block">&ensp;</label>
+                  <button class="btn btn-block btn-sm btn-danger" wire:click="loadAllStok">
+                    Reset
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        @endif
         <div class="modal-body p-0 table-responsive text-sm">
           <table class="table table-bordered mb-0">
             <thead>

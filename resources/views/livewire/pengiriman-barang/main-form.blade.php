@@ -3,20 +3,20 @@
     <div class="col-12">
       <div class="card card-outline card-success">
         <div class="card-header">
-          <h4 class="card-title" wire:click="dummy"> <i class="fa fa-plus-circle text-sm text-success"></i> &ensp; {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'Detail':'Form' }} Permintaan Barang </h4>
+          <h4 class="card-title" wire:click="dummy"> <i class="fa fa-plus-circle text-sm text-success"></i> &ensp; {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'Detail':'Form' }} Pengiriman Barang </h4>
           <div class="card-tools">
-            <a href="{{ route('permintaan-barang.index') }}" class="btn btn-xs btn-danger px-3"> <i class="fa fa-arrow-left"></i> &ensp; Kembali</a>
+            <a href="{{ route('pengiriman-barang.index') }}" class="btn btn-xs btn-danger px-3"> <i class="fa fa-arrow-left"></i> &ensp; Kembali</a>
           </div>
         </div>
         <div class="card-body text-sm p-0">
           <div class="row px-3 py-2">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="id_toko">Toko : </label>
+                <label for="id_toko">Toko Asal : </label>
                 <div wire:ignore>
-                  <select name="id_toko" id="id_toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
-                    @if ($permintaanBarang != null && isset($permintaanBarang['toko']) && $permintaanBarang['toko'] != null)
-                      <option value="{{ $permintaanBarang['toko']['id'] }}" selected>{{ $permintaanBarang['toko']['nama_toko'] }}</option>
+                  <select name="id_toko" id="id_toko" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko -" style="width: 100% !important;" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
+                    @if ($pengirimanBarang != null && isset($pengirimanBarang['toko']) && $pengirimanBarang['toko'] != null)
+                      <option value="{{ $pengirimanBarang['toko']['id'] }}" selected>{{ $pengirimanBarang['toko']['nama_toko'] }}</option>
                     @else
                       <option value=""></option>
                     @endif
@@ -27,11 +27,11 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="id_gudang">Gudang : </label>
+                <label for="id_gudang">Gudang Asal : </label>
                 <div wire:ignore>
-                  <select name="id_gudang" id="id_gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
-                    @if ($permintaanBarang != null && isset($permintaanBarang['gudang']) && $permintaanBarang['gudang'] != null)
-                      <option value="{{ $permintaanBarang['gudang']['id'] }}" selected>{{ $permintaanBarang['gudang']['nama_gudang'] }}</option>
+                  <select name="id_gudang" id="id_gudang" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang -" style="width: 100% !important;" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
+                    @if ($pengirimanBarang != null && isset($pengirimanBarang['gudang']) && $pengirimanBarang['gudang'] != null)
+                      <option value="{{ $pengirimanBarang['gudang']['id'] }}" selected>{{ $pengirimanBarang['gudang']['nama_gudang'] }}</option>
                     @else
                       <option value=""></option>
                     @endif
@@ -47,9 +47,9 @@
               <div class="form-group">
                 <label for="id_toko_tujuan">Toko Tujuan : </label>
                 <div wire:ignore>
-                  <select name="id_toko_tujuan" id="id_toko_tujuan" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko Tujuan -" style="width: 100% !important;" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
-                    @if ($permintaanBarang != null && isset($permintaanBarang['toko_tujuan']) && $permintaanBarang['toko_tujuan'] != null)
-                      <option value="{{ $permintaanBarang['toko_tujuan']['id'] }}" selected>{{ $permintaanBarang['toko_tujuan']['nama_toko'] }}</option>
+                  <select name="id_toko_tujuan" id="id_toko_tujuan" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Toko Tujuan -" style="width: 100% !important;" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
+                    @if ($pengirimanBarang != null && isset($pengirimanBarang['toko_tujuan']) && $pengirimanBarang['toko_tujuan'] != null)
+                      <option value="{{ $pengirimanBarang['toko_tujuan']['id'] }}" selected>{{ $pengirimanBarang['toko_tujuan']['nama_toko'] }}</option>
                     @else
                       <option value=""></option>
                     @endif
@@ -62,9 +62,9 @@
               <div class="form-group">
                 <label for="id_gudang_tujuan">Gudang Tujuan : </label>
                 <div wire:ignore>
-                  <select name="id_gudang_tujuan" id="id_gudang_tujuan" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang Tujuan -" style="width: 100% !important;" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
-                    @if ($permintaanBarang != null && isset($permintaanBarang['gudang_tujuan']) && $permintaanBarang['gudang_tujuan'] != null)
-                      <option value="{{ $permintaanBarang['gudang_tujuan']['id'] }}" selected>{{ $permintaanBarang['gudang_tujuan']['nama_gudang'] }}</option>
+                  <select name="id_gudang_tujuan" id="id_gudang_tujuan" class="form-control form-control-sm" data-placeholder="- Silahkan Pilih Gudang Tujuan -" style="width: 100% !important;" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
+                    @if ($pengirimanBarang != null && isset($pengirimanBarang['gudang_tujuan']) && $pengirimanBarang['gudang_tujuan'] != null)
+                      <option value="{{ $pengirimanBarang['gudang_tujuan']['id'] }}" selected>{{ $pengirimanBarang['gudang_tujuan']['nama_gudang'] }}</option>
                     @else
                       <option value=""></option>
                     @endif
@@ -78,17 +78,17 @@
             </div>
             <div class="col-md-4">
               <div class="form-group">
-                <label for="tanggal_permintaan">Tanggal Permintaan : </label>
-                <input type="date" wire:model="state.tanggal_permintaan" name="tanggal_permintaan" id="tanggal_permintaan" class="form-control form-control-sm {{ $errors->has('state.tanggal_permintaan') ? 'is-invalid':'' }}" required {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
+                <label for="tanggal_pengiriman">Tanggal Pengiriman : </label>
+                <input type="date" wire:model="state.tanggal_pengiriman" name="tanggal_pengiriman" id="tanggal_pengiriman" class="form-control form-control-sm {{ $errors->has('state.tanggal_pengiriman') ? 'is-invalid':'' }}" required {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
                 <div class="invalid-feedback">
-                  {{ $errors->first('state.tanggal_permintaan') }}
+                  {{ $errors->first('state.tanggal_pengiriman') }}
                 </div>
               </div>
             </div>
             <div class="col-md-8">
               <div class="form-group">
                 <label for="keterangan">Keterangan : </label>
-                <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Permintaan / Asal Permintaan" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}></textarea>
+                <textarea wire:model="state.keterangan" name="keterangan" id="keterangan" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Pengiriman / Asal Pengiriman" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}></textarea>
                 <div class="invalid-feedback">
                   {{ $errors->first('state.keterangan') }}
                 </div>
@@ -96,7 +96,7 @@
             </div>
           </div>
           <div class="row">
-            @if ($permintaanBarang == null)
+            @if ($pengirimanBarang == null)
               <div class="col-12">
                 <h6 class="font-weight-bold bg-teal text-white py-2 px-2 mb-0">Pilih Barang Untuk Menambahkan Data :</h6>
               </div>
@@ -114,7 +114,7 @@
               </div>
             @endif
             <div class="col-12">
-              <h6 class="font-weight-bold bg-olive text-white py-2 px-2 mb-0" wire:click="$refresh">Daftar Barang Yang di-Minta :</h6>
+              <h6 class="font-weight-bold bg-olive text-white py-2 px-2 mb-0" wire:click="$refresh">Daftar Barang Yang di-Kirim :</h6>
             </div>
             <div class="col-12 table-responsive">
               <table class="table table-bordered m-0">
@@ -124,7 +124,7 @@
                     <th class="align-middle p-2">Nama Barang</th>
                     <th class="align-middle p-2 text-center" width="10%">Jumlah</th>
                     <th class="align-middle p-2" width="40%">Keterangan</th>
-                    @if ($permintaanBarang == null || ($permintaanBarang != null && $permintaanBarang['status'] == false))
+                    @if ($pengirimanBarang == null || ($pengirimanBarang != null && $pengirimanBarang['status'] == false))
                       <th class="align-middle p-2 text-center" width="5%">#</th>
                     @endif
                   </tr>
@@ -140,14 +140,18 @@
                             Data Barang Tidak Valid ! <br> Silahkan Hapus dan Pilih Ulang Data !
                           </div>
                         @endif
+
+                        <a href="#" wire:click="openModalStok('{{ $item['id_barang'] }}')">
+                          <span class="fa fa-table px-3"></span>
+                        </a>
                       </td>
                       <td class="align-middle p-1">
-                        <input type="number" wire:model="state.detail.{{ $key }}.jumlah" name="jumlah_{{ $key }}" id="jumlah_{{ $key }}" class="form-control form-control-sm {{ $errors->has('state.detail.' . $key . '.jumlah') ? 'is-invalid':'' }}" {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}>
+                        <input type="number" wire:model="state.detail.{{ $key }}.jumlah" name="jumlah_{{ $key }}" id="jumlah_{{ $key }}" class="form-control form-control-sm {{ $errors->has('state.detail.' . $key . '.jumlah') ? 'is-invalid':'' }}" {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}>
                       </td>
                       <td class="align-middle p-1">
-                        <textarea wire:model="state.detail.{{ $key }}.keterangan" name="keterangan_{{ $key }}" id="keterangan_{{ $key }}" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.detail.' . $key . '.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..." {{ $permintaanBarang != null && $permintaanBarang['status'] == true ? 'disabled':'' }}></textarea>
+                        <textarea wire:model="state.detail.{{ $key }}.keterangan" name="keterangan_{{ $key }}" id="keterangan_{{ $key }}" cols="1" rows="1" class="form-control form-control-sm {{ $errors->has('state.detail.' . $key . '.keterangan') ? 'is-invalid':'' }}" placeholder="Masukan Keterangan Tambahan..." {{ $pengirimanBarang != null && $pengirimanBarang['status'] == true ? 'disabled':'' }}></textarea>
                       </td>
-                      @if ($permintaanBarang == null || ($permintaanBarang != null && $permintaanBarang['status'] == false))
+                      @if ($pengirimanBarang == null || ($pengirimanBarang != null && $pengirimanBarang['status'] == false))
                       <td class="align-middle p-1 text-center">
                         <button class="btn btn-danger btn-xs px-3" wire:click="removeDetail('{{ $key }}')">
                           <i class="fa fa-trash"></i>
@@ -157,7 +161,7 @@
                     </tr>
                   @empty
                     <tr>
-                      <td colspan="5" class="text-center p-1 {{ $errors->has('state.detail') ? 'bg-danger':'' }}">{{ $errors->has('state.detail') ? 'Detail Permintaan Stok Barang Tidak Boleh Kosong !':'Belum Ada Data' }}</td>
+                      <td colspan="5" class="text-center p-1 {{ $errors->has('state.detail') ? 'bg-danger':'' }}">{{ $errors->has('state.detail') ? 'Detail Pengiriman Stok Barang Tidak Boleh Kosong !':'Belum Ada Data' }}</td>
                     </tr>
                   @endforelse
                 </tbody>
@@ -167,8 +171,8 @@
         </div>
         <div class="card-footer px-2 py-2">
           <div class="row">
-            @if ($permintaanBarang != null)
-              @switch($permintaanBarang['status'])
+            @if ($pengirimanBarang != null)
+              @switch($pengirimanBarang['status'])
                 @case(0)
                   <div class="col-md-3">
                     <button class="btn btn-success btn-block btn-sm" wire:click="updateData">
@@ -184,7 +188,7 @@
                   @else
                     <div class="col-md-4">
                       <button class="btn btn-info btn-block btn-sm" wire:click="confirmData">
-                        <i class="fa fa-check-circle"></i> &ensp; Konfirmasi Permintaan Barang
+                        <i class="fa fa-check-circle"></i> &ensp; Konfirmasi Pengiriman Barang
                       </button>
                     </div>
                   @endif
@@ -192,7 +196,7 @@
                 @case(1)
                   <div class="col-md-4">
                     <button class="btn btn-danger btn-block btn-sm" wire:click="cancelData">
-                      <i class="fa fa-times-circle"></i> &ensp; Batalkan Permintaan
+                      <i class="fa fa-times-circle"></i> &ensp; Batalkan Pengiriman
                     </button>
                   </div>
                   @break
@@ -201,7 +205,7 @@
             @else
               <div class="col-md-5">
                 <button class="btn btn-success btn-block btn-sm" wire:click="createData">
-                  <i class="fa fa-plus"></i> &ensp; Buat Data Permintaan Stok Barang
+                  <i class="fa fa-plus"></i> &ensp; Buat Data Pengiriman Stok Barang
                 </button>
               </div>
             @endif
@@ -210,6 +214,8 @@
       </div>
     </div>
   </div>
+
+  @livewire('barang.modal-stok-barang')
 </div>
 
 @push('css')
@@ -407,10 +413,10 @@
   });
 </script>
 
-@if ($permintaanBarang != null)
+@if ($pengirimanBarang != null)
 <script>
 $(document).ready(function () {
-  var id_toko = "{{ $permintaanBarang['id_toko'] }}";
+  var id_toko = "{{ $pengirimanBarang['id_toko'] }}";
   $('#id_gudang').select2('destroy');
 
   $('#id_gudang').select2({
@@ -440,7 +446,7 @@ $(document).ready(function () {
     }
   });
 
-  var id_toko_tujuan = "{{ $permintaanBarang['id_toko_tujuan'] }}";
+  var id_toko_tujuan = "{{ $pengirimanBarang['id_toko_tujuan'] }}";
   $('#id_gudang_tujuan').select2('destroy');
 
   $('#id_gudang_tujuan').select2({

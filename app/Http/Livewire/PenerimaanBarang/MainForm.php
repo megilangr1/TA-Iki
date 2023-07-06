@@ -127,6 +127,7 @@ class MainForm extends Component
     {
         if (isset($this->state['detail'][$key])) {
             unset($this->state['detail'][$key]);
+            $this->dirty = true;
         }
     }
 
@@ -247,6 +248,7 @@ class MainForm extends Component
             $insertData = [];
             foreach ($getHeader->detail as $key => $value) {
                 $insertData[] = [
+                    'jenis_transaksi' => 1,
                     'id_transaksi' => $getHeader->id,
                     'id_transaksi_detail' => $value->id,
                     'id_toko' => $getHeader->id_toko,

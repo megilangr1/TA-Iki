@@ -19,6 +19,8 @@ class ModalStokBarang extends Component
     public $toko = [];
     public $gudang = [];
 
+    public $showFilter = true;
+
     protected $listeners = [
         'openModalStokBarang'
     ];
@@ -39,12 +41,22 @@ class ModalStokBarang extends Component
 
     public function openModalStokBarang($id)
     {
-        $this->reset('barang', 'stokData', 'toko', 'gudang', 'state');
+        $this->reset('barang', 'stokData', 'toko', 'gudang', 'state', 'showFilter');
         try {
+            $idToko = null;
+            $idGudang = null;
+            if (is_array($id)) {
+                $idToko = $id['id_toko'] ?? null;
+                $idGudang = $id['id_gudang'] ?? null;
+                $id = $id['id_barang'];
+
+                $this->showFilter = false;
+            }
+
             $getBarang = Barang::where('id', '=', $id)->firstOrFail();
             $this->barang = $getBarang->toArray();
 
-            $this->loadAllStok();
+            $this->loadAllStok($idToko, $idGudang);
             $this->setSelect2();
             $this->emit('stok-barang-modal', 'show');
         } catch (\Exception $e) {
@@ -52,7 +64,7 @@ class ModalStokBarang extends Component
         }
     }
 
-    public function loadAllStok()
+    public function loadAllStok($idToko = null, $idGudang = null)
     {
         try {
             $this->reset('stokData');
@@ -64,8 +76,12 @@ class ModalStokBarang extends Component
                 ->selectRaw('sum(perubahan_stok) as perubahan_stok, id_toko, id_gudang, id_barang')
                 ->orderBy('stok_barangs.id_toko', 'ASC')
                 ->orderBy('stok_barangs.id_gudang', 'ASC')
-                ->where('stok_barangs.id_barang', '=', $this->barang['id'])
-                ->get();
+                ->where('stok_barangs.id_barang', '=', $this->barang['id']);
+
+            if ($idToko != null) {$getData = $getData->where('stok_barangs.id_toko', '=', $idToko); }
+
+            if ($idGudang != null) { $getData = $getData->where('stok_barangs.id_gudang', '=', $idGudang); }
+            $getData = $getData->get();
 
             $this->stokData['data'] = $getData->toArray();
             $this->setSelect2();
@@ -121,6 +137,6 @@ class ModalStokBarang extends Component
 
     public function dummy()
     {
-        dd([$this->barang, $this->state]);
+        dd([$this->barang, $this->showFilter]);
     }
 }

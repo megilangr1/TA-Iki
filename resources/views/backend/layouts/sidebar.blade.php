@@ -62,6 +62,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="{{ route('pengiriman-barang.index') }}" class="nav-link">
+            <i class="fas fa-truck text-sm nav-icon"></i>
+            <p>Pengiriman Barang</p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="{{ route('penerimaan-barang.index') }}" class="nav-link">
             <i class="fas fa-sign-in-alt text-sm nav-icon"></i>
             <p>Penerimaan Barang</p>

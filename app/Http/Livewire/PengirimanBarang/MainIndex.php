@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Livewire\PermintaanBarang;
+namespace App\Http\Livewire\PengirimanBarang;
 
-use App\Models\PermintaanBarang;
+use App\Models\PengirimanBarang;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -14,9 +14,9 @@ class MainIndex extends Component
 
     public function render()
     {
-        $getData = PermintaanBarang::with('detail', 'toko', 'gudang', 'toko_tujuan', 'gudang_tujuan')->orderBy('created_at', 'ASC')->paginate('10');
+        $getData = PengirimanBarang::with('detail', 'toko', 'gudang', 'toko_tujuan', 'gudang_tujuan')->orderBy('created_at', 'ASC')->paginate('10');
 
-        return view('livewire.permintaan-barang.main-index', [
+        return view('livewire.pengiriman-barang.main-index', [
             'dataPermintaan' => $getData
         ])->layout('backend.layouts.master');
     }
@@ -25,7 +25,7 @@ class MainIndex extends Component
     {
         DB::beginTransaction();
         try {
-            $getData = PermintaanBarang::where('id', '=', $id)->firstOrFail();
+            $getData = PengirimanBarang::where('id', '=', $id)->firstOrFail();
 
             $deleteData = $getData->delete();
             $deleteDetail = $getData->detail()->delete();

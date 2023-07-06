@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Livewire\PermintaanBarang;
+namespace App\Http\Livewire\PengirimanBarang;
 
 use App\Models\Barang;
-use App\Models\PermintaanBarangDetail;
-use App\Models\PermintaanBarang;
+use App\Models\PengirimanBarang;
+use App\Models\PengirimanBarangDetail;
+use App\Models\StokBarang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class MainForm extends Component
 {
-    public $permintaanBarang = [];
+    public $pengirimanBarang = [];
 
     public $state = [];
     public $params = [
@@ -23,7 +24,7 @@ class MainForm extends Component
         'id_toko_tujuan' => null,
         'id_gudang_tujuan' => null,
         
-        'tanggal_permintaan' => null,
+        'tanggal_pengiriman' => null,
         'keterangan' => null,
 
         'detail' => [],
@@ -91,19 +92,19 @@ class MainForm extends Component
     {
         $this->state = $this->params;
         if ($id != null) {
-            $this->getPermintaan($id);
+            $this->getPengiriman($id);
         }
     }
 
     public function render()
     {
-        return view('livewire.permintaan-barang.main-form');
+        return view('livewire.pengiriman-barang.main-form');
     }
 
-    public function getPermintaan($id)
+    public function getPengiriman($id)
     {
         try {
-            $getData = PermintaanBarang::with([
+            $getData = PengirimanBarang::with([
                 'detail',
                 'detail.barang',
                 'toko',
@@ -112,14 +113,14 @@ class MainForm extends Component
                 'gudang_tujuan'
             ])->where('id', '=', $id)->firstOrFail();
 
-            $this->permintaanBarang = $getData->toArray();
+            $this->pengirimanBarang = $getData->toArray();
 
             $this->state['id'] = $getData->id;
             $this->state['id_toko'] = $getData->id_toko;
             $this->state['id_gudang'] = $getData->id_gudang;
             $this->state['id_toko_tujuan'] = $getData->id_toko_tujuan;
             $this->state['id_gudang_tujuan'] = $getData->id_gudang_tujuan;
-            $this->state['tanggal_permintaan'] = date('Y-m-d', strtotime($getData->tanggal_permintaan));
+            $this->state['tanggal_pengiriman'] = date('Y-m-d', strtotime($getData->tanggal_pengiriman));
             $this->state['keterangan'] = $getData->keterangan;
 
             foreach ($getData->detail as $key => $value) {
@@ -132,6 +133,19 @@ class MainForm extends Component
             }
         } catch (\Exception $e) {
             dd($e);
+        }
+    }
+
+    public function openModalStok($id)
+    {
+        if ($this->state['id_toko'] != null && $this->state['id_gudang'] != null) {
+            $this->emitTo('barang.modal-stok-barang', 'openModalStokBarang', [
+                'id_barang' => $id,
+                'id_toko' => $this->state['id_toko'],
+                'id_gudang' => $this->state['id_gudang']
+            ]);
+        } else {
+            $this->emit('warning', 'Silahkan Pilih Asal Toko & Asal Gudang Terlebih Dahulu !');
         }
     }
 
@@ -153,7 +167,7 @@ class MainForm extends Component
             'state.id_toko_tujuan' => 'required|exists:tokos,id',
             'state.id_gudang_tujuan' => 'required|exists:gudangs,id',
 
-            'state.tanggal_permintaan' => 'required|date',
+            'state.tanggal_pengiriman' => 'required|date',
             'state.keterangan' => 'nullable|string',
             
             'state.detail' => 'required|array',
@@ -165,22 +179,21 @@ class MainForm extends Component
             'date' => 'Format Input Harus Berupa Tanggal !',
         ]);
 
-        
         DB::beginTransaction();
         try {
-            $insertHeader = PermintaanBarang::create([
+            $insertHeader = PengirimanBarang::create([
                 'id_toko' => $this->state['id_toko'],
                 'id_gudang' => $this->state['id_gudang'],
                 'id_toko_tujuan' => $this->state['id_toko_tujuan'],
                 'id_gudang_tujuan' => $this->state['id_gudang_tujuan'],
-                'tanggal_permintaan' => date('Y-m-d', strtotime($this->state['tanggal_permintaan'])),
+                'tanggal_pengiriman' => date('Y-m-d', strtotime($this->state['tanggal_pengiriman'])),
                 'keterangan' => $this->state['keterangan'],
                 'status' => false,
             ]);
 
             foreach ($this->state['detail'] as $key => $value) {
-                $insertDetail = PermintaanBarangDetail::create([
-                    'id_permintaan_barang' => $insertHeader->id,
+                $insertDetail = PengirimanBarangDetail::create([
+                    'id_pengiriman_barang' => $insertHeader->id,
                     'id_barang' => $value['id_barang'],
                     'jumlah' => $value['jumlah'],
                     'keterangan' => $value['keterangan'],
@@ -190,8 +203,8 @@ class MainForm extends Component
             }
 
             DB::commit();
-            session()->flash('success', 'Data Transaksi Permintaan Berhasil di-Buat !');
-            return redirect()->route('permintaan-barang.detail', $insertHeader->id);
+            session()->flash('success', 'Data Transaksi Pengiriman Berhasil di-Buat !');
+            return redirect()->route('pengiriman-barang.detail', $insertHeader->id);
         } catch (\Exception $e) {
             dd($e);
         }
@@ -199,10 +212,10 @@ class MainForm extends Component
 
     public function resetInput()
     {
-        $id = $this->permintaanBarang;
-        $this->reset('dirty', 'state', 'permintaanBarang');
+        $id = $this->pengirimanBarang;
+        $this->reset('dirty', 'state', 'pengirimanBarang');
         $this->state = $this->params;
-        $this->getPermintaan($id);
+        $this->getPengiriman($id);
     }
     
     public function updateData()
@@ -213,7 +226,7 @@ class MainForm extends Component
             'state.id_gudang' => 'required|exists:gudangs,id',
             'state.id_toko_tujuan' => 'required|exists:tokos,id',
             'state.id_gudang_tujuan' => 'required|exists:gudangs,id',
-            'state.tanggal_permintaan' => 'required|date',
+            'state.tanggal_pengiriman' => 'required|date',
             'state.keterangan' => 'nullable|string',
             
             'state.detail' => 'required|array',
@@ -228,22 +241,22 @@ class MainForm extends Component
 
         DB::beginTransaction();
         try {
-            $getHeader = PermintaanBarang::where('id', '=', $this->permintaanBarang['id'])->firstOrFail();
+            $getHeader = PengirimanBarang::where('id', '=', $this->pengirimanBarang['id'])->firstOrFail();
 
             $updateHeader = $getHeader->update([
                 'id_toko' => $this->state['id_toko'],
                 'id_gudang' => $this->state['id_gudang'],
                 'id_toko_tujuan' => $this->state['id_toko_tujuan'],
                 'id_gudang_tujuan' => $this->state['id_gudang_tujuan'],
-                'tanggal_permintaan' => date('Y-m-d', strtotime($this->state['tanggal_permintaan'])),
+                'tanggal_pengiriman' => date('Y-m-d', strtotime($this->state['tanggal_pengiriman'])),
                 'keterangan' => $this->state['keterangan'],
                 'status' => false,
             ]);
             $deleteDetail = $getHeader->detail()->delete();
 
             foreach ($this->state['detail'] as $key => $value) {
-                $insertDetail = PermintaanBarangDetail::create([
-                    'id_permintaan_barang' => $getHeader->id,
+                $insertDetail = PengirimanBarangDetail::create([
+                    'id_pengiriman_barang' => $getHeader->id,
                     'id_barang' => $value['id_barang'],
                     'jumlah' => $value['jumlah'],
                     'keterangan' => $value['keterangan'],
@@ -252,8 +265,8 @@ class MainForm extends Component
             }
 
             DB::commit();
-            session()->flash('success', 'Perubahan Data Transaksi Permintaan Berhasil di-Simpan !');
-            return redirect()->route('permintaan-barang.detail', $getHeader->id);
+            session()->flash('success', 'Perubahan Data Transaksi Pengiriman Berhasil di-Simpan !');
+            return redirect()->route('pengiriman-barang.detail', $getHeader->id);
         } catch (\Exception $e) {
             dd($e);
         }
@@ -263,20 +276,48 @@ class MainForm extends Component
     {
         DB::beginTransaction();
         try {
-            $getHeader = PermintaanBarang::whereHas('detail')
+            $getHeader = PengirimanBarang::whereHas('detail')
                 ->whereHas('gudang')
                 ->whereHas('toko')
                 ->whereHas('toko_tujuan')
                 ->whereHas('gudang_tujuan')
-                ->where('id', '=', $this->permintaanBarang['id'])
+                ->where('id', '=', $this->pengirimanBarang['id'])
                 ->firstOrFail();
+            
+            $canConfirm = true;
+            foreach ($getHeader->detail as $key => $value) {
+                $checkStok = StokBarang::where('id_toko', '=', $getHeader->id_toko)
+                    ->where('id_gudang', '=', $getHeader->id_gudang)
+                    ->where('id_barang', '=', $value->id_barang)
+                    ->sum('perubahan_stok');
 
-            $updateHeader = $getHeader->update([
-                'status' => true
-            ]);
-            DB::commit();
-            session()->flash('success', 'Transaksi Permintaan Barang di-Konfirmasi !');
-            return redirect()->route('permintaan-barang.detail', $getHeader->id);
+                if ($checkStok >= $value->jumlah) {
+                    $insertData[] = [
+                        'jenis_transaksi' => 2,
+                        'id_transaksi' => $getHeader->id,
+                        'id_transaksi_detail' => $value->id,
+                        'id_toko' => $getHeader->id_toko,
+                        'id_gudang' => $getHeader->id_gudang,
+                        'id_barang' => $value->id_barang,
+                        'nominal_stok' => $value->jumlah,
+                        'perubahan_stok' => -1 * $value->jumlah,
+                    ];
+                } else {
+                    $canConfirm = false;
+                }
+            }
+
+            if (!$canConfirm) {
+                $this->emit('error', 'Tidak Dapat Mengkonfirmasi Pengiriman ! <br> Data Stok Salah Satu Barang Tidak Cukup ! <br> Silahkan Periksa Kembali Data !');
+            } else {
+                $insertStok = StokBarang::insert($insertData);
+                $updateHeader = $getHeader->update([
+                    'status' => true
+                ]);
+                DB::commit();
+                session()->flash('success', 'Transaksi Pengiriman Barang di-Konfirmasi !');
+                return redirect()->route('pengiriman-barang.detail', $getHeader->id);
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);
@@ -287,20 +328,21 @@ class MainForm extends Component
     {
         DB::beginTransaction();
         try {
-            $getHeader = PermintaanBarang::whereHas('detail')
+            $getHeader = PengirimanBarang::whereHas('detail')
                 ->whereHas('gudang')
                 ->whereHas('toko')
                 ->whereHas('toko_tujuan')
                 ->whereHas('gudang_tujuan')
-                ->where('id', '=', $this->permintaanBarang['id'])
+                ->where('id', '=', $this->pengirimanBarang['id'])
                 ->firstOrFail();
 
+            $deleteStok = StokBarang::where('jenis_transaksi', '=', 2)->where('id_transaksi', '=', $getHeader->id)->delete();
             $updateHeader = $getHeader->update([
                 'status' => 2
             ]);
             DB::commit();
-            session()->flash('success', 'Transaksi Permintaan Barang di-Batalkan !');
-            return redirect()->route('permintaan-barang.detail', $getHeader->id);
+            session()->flash('success', 'Transaksi Pengiriman Barang di-Batalkan !');
+            return redirect()->route('pengiriman-barang.detail', $getHeader->id);
         } catch (\Exception $e) {
             DB::rollBack();
             dd($e);

@@ -11,6 +11,7 @@ class StokBarang extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
+        'jenis_transaksi',
         'id_transaksi',
         'id_transaksi_detail',
         'id_toko',
