@@ -5,6 +5,8 @@ use App\Http\Controllers\MainController;
 use App\Http\Livewire\Barang\MainIndex as BarangMainIndex;
 use App\Http\Livewire\Kategori\MainIndex as KategoriMainIndex;
 use App\Http\Livewire\Pegawai\MainIndex as PegawaiMainIndex;
+use App\Http\Livewire\PermintaanBarang\MainIndex as PermintaanBarangMainIndex;
+use App\Http\Livewire\PermintaanBarang\MainForm as PermintaanBarangMainForm;
 use App\Http\Livewire\PenerimaanBarang\MainIndex as PenerimaanBarangMainIndex;
 use App\Http\Livewire\PenerimaanBarang\MainForm as PenerimaanBarangMainForm;
 use App\Http\Livewire\Pos\MainIndex as PosMainIndex;
@@ -48,6 +50,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/toko', [AjaxDataController::class, 'dataToko'])->name('toko');
         Route::get('/gudang', [AjaxDataController::class, 'dataGudang'])->name('gudang');
         Route::get('/barang', [AjaxDataController::class, 'dataBarang'])->name('barang');
+    });
+
+    Route::prefix('permintaan-barang')->name('permintaan-barang.')->group(function() {
+        Route::get('/', PermintaanBarangMainIndex::class)->name('index');
+        Route::get('/create', PermintaanBarangMainForm::class)->name('create');
+        Route::get('/{id}/detail', PermintaanBarangMainForm::class)->name('detail');
     });
 
     Route::prefix('penerimaan-barang')->name('penerimaan-barang.')->group(function() {

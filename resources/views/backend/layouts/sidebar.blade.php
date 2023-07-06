@@ -56,6 +56,12 @@
       </a>
       <ul class="nav nav-treeview">
         <li class="nav-item">
+          <a href="{{ route('permintaan-barang.index') }}" class="nav-link">
+            <i class="fas fa-table text-sm nav-icon"></i>
+            <p>Permintaan Barang</p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="{{ route('penerimaan-barang.index') }}" class="nav-link">
             <i class="fas fa-sign-in-alt text-sm nav-icon"></i>
             <p>Penerimaan Barang</p>

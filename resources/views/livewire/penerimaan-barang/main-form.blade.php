@@ -152,27 +152,27 @@
                     <i class="fa fa-check"></i> &ensp; Simpan Perubahan
                   </button>
                 </div>
-                  @if ($dirty)
-                    <div class="col-md-3">
-                      <button class="btn btn-danger btn-block btn-sm" wire:click="resetInput">
-                        <i class="fa fa-undo"></i> &ensp; Reset Input
-                      </button>
-                    </div>
-                  @else
-                    <div class="col-md-4">
-                      <button class="btn btn-info btn-block btn-sm" wire:click="confirmData">
-                        <i class="fa fa-check-circle"></i> &ensp; Konfirmasi Penerimaan Barang
-                      </button>
-                    </div>
-                  @endif
+                @if ($dirty)
+                  <div class="col-md-3">
+                    <button class="btn btn-danger btn-block btn-sm" wire:click="resetInput">
+                      <i class="fa fa-undo"></i> &ensp; Reset Input
+                    </button>
+                  </div>
+                @else
+                  <div class="col-md-4">
+                    <button class="btn btn-info btn-block btn-sm" wire:click="confirmData">
+                      <i class="fa fa-check-circle"></i> &ensp; Konfirmasi Penerimaan Barang
+                    </button>
+                  </div>
+                @endif
               @endif
-              @else
+            @else
               <div class="col-md-5">
                 <button class="btn btn-success btn-block btn-sm" wire:click="createData">
                   <i class="fa fa-plus"></i> &ensp; Buat Data Penerimaan Stok Barang
                 </button>
               </div>
-              @endif
+            @endif
           </div>
         </div>
       </div>

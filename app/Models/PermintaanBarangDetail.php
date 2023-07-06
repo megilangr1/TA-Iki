@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class PenerimaanBarangDetail extends Model
+class PermintaanBarangDetail extends Model
 {
     use HasFactory, SoftDeletes;
-
+    
     protected $fillable = [
         'id_permintaan_barang',
         'id_barang',
