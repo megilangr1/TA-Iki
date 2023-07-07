@@ -11,7 +11,7 @@ class PenerimaanBarangDetail extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'id_permintaan_barang',
+        'id_penerimaan_barang',
         'id_barang',
         'jumlah',
         'keterangan',
