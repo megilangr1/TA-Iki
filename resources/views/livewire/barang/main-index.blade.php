@@ -176,7 +176,7 @@
       @this.set('state.id_kategori', $(this).val());
     });
 
-    Livewire.on('setSelect2', function(data) {
+    Livewire.on('setSelect2Kategori', function(data) {
       if (data.option != null) {
         var newOption = new Option(data.option.text, data.option.value, false, true);
         $('#id_kategori').append(newOption);

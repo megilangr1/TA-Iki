@@ -68,7 +68,7 @@ class MainIndex extends Component
             }
         }
 
-        $this->emit('setSelect2', $select2Data);
+        $this->emit('setSelect2Kategori', $select2Data);
     }
     
     public function createData()
