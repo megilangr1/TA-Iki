@@ -105,11 +105,6 @@
   .pagination {
     margin: 0px !important;
   }
-
-  .page-item.active .page-link {
-    background-color: var(--custom-color-1) !important;
-    border-color: #fff !important;
-  }
 </style>
 @endpush
 

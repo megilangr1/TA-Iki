@@ -5,6 +5,7 @@ namespace App\Http\Livewire\PengirimanBarang;
 use App\Models\Barang;
 use App\Models\PengirimanBarang;
 use App\Models\PengirimanBarangDetail;
+use App\Models\PermintaanBarang;
 use App\Models\StokBarang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,12 @@ use Livewire\Component;
 class MainForm extends Component
 {
     public $pengirimanBarang = [];
+    public $permintaanBarang = [];
 
     public $state = [];
     public $params = [
         'id' => null,
+        'id_permintaan_barang' => null,
 
         'id_toko' => null,
         'id_gudang' => null,
@@ -34,7 +37,8 @@ class MainForm extends Component
     public $barang = null;
 
     protected $listeners = [
-        'resetSelect2Barang'
+        'resetSelect2Barang',
+        'selectedPermintaanBarang'
     ];
 
     public function updatedState($value, $key)
@@ -49,6 +53,7 @@ class MainForm extends Component
         if ($key == 'id_toko_tujuan') {
             if ($this->state['id_toko_tujuan'] != null) {
                 $this->emit('initSelect2GudangTujuan', $this->state['id_toko_tujuan']);
+                dd("OK");
             }
         }
 
@@ -110,7 +115,12 @@ class MainForm extends Component
                 'toko',
                 'gudang',
                 'toko_tujuan',
-                'gudang_tujuan'
+                'gudang_tujuan',
+                'permintaanBarang',
+                'permintaanBarang.toko',
+                'permintaanBarang.gudang',
+                'permintaanBarang.toko_tujuan',
+                'permintaanBarang.gudang_tujuan',
             ])->where('id', '=', $id)->firstOrFail();
 
             $this->pengirimanBarang = $getData->toArray();
@@ -130,6 +140,11 @@ class MainForm extends Component
                     'jumlah' => $value->jumlah,
                     'keterangan' => $value->keterangan,
                 ];
+            }
+
+            if ($getData->permintaanBarang != null) {
+                $this->state['id_permintaan_barang'] = $getData->permintaanBarang->id;
+                $this->permintaanBarang = $getData->permintaanBarang->toArray();
             }
         } catch (\Exception $e) {
             dd($e);
@@ -161,6 +176,7 @@ class MainForm extends Component
     {
         $this->resetErrorBag();
         $this->validate([
+            'state.id_permintaan_barang' => 'nullable|exists:permintaan_barangs,id',
             'state.id_toko' => 'required|exists:tokos,id',
             'state.id_gudang' => 'required|exists:gudangs,id',
 
@@ -181,7 +197,12 @@ class MainForm extends Component
 
         DB::beginTransaction();
         try {
+            if ($this->state['id_permintaan_barang'] != null) {
+                $checkPermintaan = PermintaanBarang::where('id', '=', $this->state['id_permintaan_barang'])->firstOrFail();
+            }
+
             $insertHeader = PengirimanBarang::create([
+                'id_permintaan' => $this->state['id_permintaan_barang'],
                 'id_toko' => $this->state['id_toko'],
                 'id_gudang' => $this->state['id_gudang'],
                 'id_toko_tujuan' => $this->state['id_toko_tujuan'],
@@ -347,6 +368,45 @@ class MainForm extends Component
             DB::rollBack();
             dd($e);
         }
+    }
+
+    public function openModalPermintaanBarang()
+    {
+        $data = [
+            'props' => 'show',
+        ];
+        $this->emitTo('permintaan-barang.modal-data', 'openModalDataPermintaan', $data);
+    }
+
+    public function selectedPermintaanBarang($data)
+    {
+        if ($data != null) {
+            $this->state = $this->params;
+            $this->permintaanBarang = $data;
+
+            $this->state['id_permintaan_barang'] = $data['id'];
+            $this->state['id_toko'] = $data['id_toko_tujuan'];
+            $this->state['id_gudang'] = $data['id_gudang_tujuan'];
+            $this->state['id_toko_tujuan'] = $data['id_toko'];
+            $this->state['id_gudang_tujuan'] = $data['id_gudang'];
+            $this->state['tanggal_pengiriman'] = null;
+            $this->state['keterangan'] = null;
+
+            foreach ($data['detail'] as $key => $value) {
+                $this->state['detail'][$value['id_barang']] = [
+                    'id_barang' => $value['id_barang'],
+                    'nama_barang' => $value['barang']['nama_barang'],
+                    'jumlah' => $value['jumlah'],
+                    'keterangan' => $value['keterangan'],
+                ];
+            }
+        }
+    }
+
+    public function resetForm()
+    {
+        $this->reset('permintaanBarang', 'state');
+        $this->state = $this->params;
     }
 
     public function dummy()

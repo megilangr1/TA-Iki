@@ -77,7 +77,7 @@
                 </tr>
               @empty
                 <tr>
-                  <td colspan="6" class="align-middle text-center p-1">Belum Ada Data</td>
+                  <td colspan="7" class="align-middle text-center p-1">Belum Ada Data</td>
                 </tr>
               @endforelse
             </tbody>

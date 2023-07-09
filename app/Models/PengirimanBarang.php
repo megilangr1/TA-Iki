@@ -45,4 +45,9 @@ class PengirimanBarang extends Model
     {
         return $this->belongsTo(Gudang::class, 'id_gudang_tujuan', 'id');
     }
+
+    public function permintaanBarang()
+    {
+        return $this->belongsTo(PermintaanBarang::class, 'id_permintaan', 'id');
+    }
 }
