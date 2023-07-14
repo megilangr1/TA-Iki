@@ -19,20 +19,22 @@
             </div>
             <div class="col-12 {{ $permintaanBarang != null ? 'd-block' : 'd-none' }}">
               <div class="row">
-                <div class="col-md-8">
-                  <div class="form-group">
-                    <button class="btn btn-block btn-xs btn-info">
-                      <span class="fa fa-eye mr-3"></span> Detail Permintaan Barang
-                    </button>
+                @if ($pengirimanBarang == null)
+                  <div class="col-md-8">
+                    <div class="form-group">
+                      <button class="btn btn-block btn-xs btn-info">
+                        <span class="fa fa-eye mr-3"></span> Detail Permintaan Barang
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="form-group">
-                    <button class="btn btn-block btn-xs btn-danger" wire:click="resetForm">
-                      <span class="fa fa-undo mr-3"></span> Reset Data
-                    </button>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <button class="btn btn-block btn-xs btn-danger" wire:click="resetPermintaanBarang">
+                        <span class="fa fa-undo mr-3"></span> Reset Data
+                      </button>
+                    </div>
                   </div>
-                </div>
+                @endif
                 <div class="col-md-3">
                   <div class="form-group">
                     <label for="toko_pengiriman_dari">Pengiriman Dari (Toko): </label>
@@ -247,11 +249,13 @@
                   @endif
                   @break
                 @case(1)
-                  <div class="col-md-4">
-                    <button class="btn btn-danger btn-block btn-sm" wire:click="cancelData">
-                      <i class="fa fa-times-circle"></i> &ensp; Batalkan Pengiriman
-                    </button>
-                  </div>
+                  @if ($pengirimanBarang['penerimaan_barang'] == null)
+                    <div class="col-md-4">
+                      <button class="btn btn-danger btn-block btn-sm" wire:click="cancelData">
+                        <i class="fa fa-times-circle"></i> &ensp; Batalkan Pengiriman
+                      </button>
+                    </div>
+                    @endif
                   @break
                 @default
               @endswitch

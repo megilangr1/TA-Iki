@@ -13,10 +13,12 @@ use Livewire\Component;
 class MainForm extends Component
 {
     public $penerimaanBarang = [];
+    public $pengirimanBarang = [];
 
     public $state = [];
     public $params = [
         'id' => null,
+        'id_pengiriman_barang' => null,
 
         'id_toko' => null,
         'id_gudang' => null,
@@ -31,7 +33,8 @@ class MainForm extends Component
     public $barang = null;
 
     protected $listeners = [
-        'resetSelect2Barang'
+        'resetSelect2Barang',
+        'selectedPengirimanBarang',
     ];
 
     public function updatedState($value, $key)
@@ -99,9 +102,14 @@ class MainForm extends Component
                 'detail',
                 'detail.barang',
                 'toko',
-                'gudang'
+                'gudang',
+                'pengirimanBarang',
+                'pengirimanBarang.toko',
+                'pengirimanBarang.gudang',
+                'pengirimanBarang.toko_tujuan',
+                'pengirimanBarang.gudang_tujuan',
             ])->where('id', '=', $id)->firstOrFail();
-
+            
             $this->penerimaanBarang = $getData->toArray();
 
             $this->state['id'] = $getData->id;
@@ -118,6 +126,11 @@ class MainForm extends Component
                     'keterangan' => $value->keterangan,
                 ];
             }
+            
+            if ($getData->pengirimanBarang != null) {
+                $this->state['id_pengiriman_barang'] = $getData->pengirimanBarang->id;
+                $this->pengirimanBarang = $getData->pengirimanBarang->toArray();
+            }
         } catch (\Exception $e) {
             dd($e);
         }
@@ -128,6 +141,43 @@ class MainForm extends Component
         if (isset($this->state['detail'][$key])) {
             unset($this->state['detail'][$key]);
             $this->dirty = true;
+        }
+    }
+
+    public function openModalDataPengiriman()
+    {
+        $data = [
+            'props' => 'show',
+        ];
+        $this->emitTo('pengiriman-barang.modal-data', 'openModalDataPengiriman', $data);
+    }
+
+    public function selectedPengirimanBarang($data)
+    {
+        if ($data != null) {
+            $this->state = $this->params;
+            $this->pengirimanBarang = $data;
+
+            $this->state['id_pengiriman_barang'] = $data['id'];
+            $this->state['id_toko'] = $data['id_toko_tujuan'];
+            $this->state['id_gudang'] = $data['id_gudang_tujuan'];
+            $this->state['id_toko_tujuan'] = $data['id_toko'];
+            $this->state['id_gudang_tujuan'] = $data['id_gudang'];
+
+            if ($this->pengirimanBarang == null) {
+                $this->state['tanggal_pengiriman'] = null;
+                $this->state['keterangan'] = null;
+            }
+
+
+            foreach ($data['detail'] as $key => $value) {
+                $this->state['detail'][$value['id_barang']] = [
+                    'id_barang' => $value['id_barang'],
+                    'nama_barang' => $value['barang']['nama_barang'],
+                    'jumlah' => $value['jumlah'],
+                    'keterangan' => $value['keterangan'],
+                ];
+            }
         }
     }
 
@@ -152,6 +202,7 @@ class MainForm extends Component
         DB::beginTransaction();
         try {
             $insertHeader = PenerimaanBarang::create([
+                'id_pengiriman' => $this->state['id_pengiriman_barang'],
                 'id_toko' => $this->state['id_toko'],
                 'id_gudang' => $this->state['id_gudang'],
                 'tanggal_penerimaan' => date('Y-m-d', strtotime($this->state['tanggal_penerimaan'])),

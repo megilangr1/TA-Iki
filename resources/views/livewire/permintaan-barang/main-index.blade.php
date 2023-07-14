@@ -84,7 +84,9 @@
           </table>
         </div>
         <div class="card-footer">
-
+          <div class="float-right">
+            {{ $dataPermintaan->links() }}
+          </div>
         </div>
       </div>
     </div>

@@ -24,10 +24,10 @@
               </tr>
             </thead>
             <tbody>
-              @forelse ($dataPermintaan as $item)
+              @forelse ($dataPengiriman as $item)
                 <tr>
-                  <td class="align-middle p-2 text-center font-weight-bold">{{ ($dataPermintaan->currentpage()-1) * $dataPermintaan->perpage() + $loop->index + 1 }}.</td>
-                  <td class="align-middle p-2 text-center">{{ date('d/m/Y', strtotime($item->tanggal_permintaan)) }}</td>
+                  <td class="align-middle p-2 text-center font-weight-bold">{{ ($dataPengiriman->currentpage()-1) * $dataPengiriman->perpage() + $loop->index + 1 }}.</td>
+                  <td class="align-middle p-2 text-center">{{ date('d/m/Y', strtotime($item->tanggal_pengiriman)) }}</td>
                   <td class="align-middle p-2 text-center">
                     {{ $item->toko->nama_toko }} 
                     <hr class="my-1">
@@ -84,7 +84,9 @@
           </table>
         </div>
         <div class="card-footer">
-
+          <div class="float-right">
+            {{ $dataPengiriman->links() }}
+          </div>
         </div>
       </div>
     </div>

@@ -190,11 +190,13 @@
                   @endif
                   @break
                 @case(1)
-                  <div class="col-md-4">
-                    <button class="btn btn-danger btn-block btn-sm" wire:click="cancelData">
-                      <i class="fa fa-times-circle"></i> &ensp; Batalkan Permintaan
-                    </button>
-                  </div>
+                  @if ($permintaanBarang['pengiriman_barang'] == null)
+                    <div class="col-md-4">
+                      <button class="btn btn-danger btn-block btn-sm" wire:click="cancelData">
+                        <i class="fa fa-times-circle"></i> &ensp; Batalkan Permintaan
+                      </button>
+                    </div>
+                  @endif
                   @break
                 @default
               @endswitch

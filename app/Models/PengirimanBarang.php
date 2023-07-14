@@ -50,4 +50,9 @@ class PengirimanBarang extends Model
     {
         return $this->belongsTo(PermintaanBarang::class, 'id_permintaan', 'id');
     }
+
+    public function penerimaanBarang()
+    {
+        return $this->hasOne(PenerimaanBarang::class, 'id_pengiriman', 'id');
+    }
 }

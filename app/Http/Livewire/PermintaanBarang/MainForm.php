@@ -109,7 +109,8 @@ class MainForm extends Component
                 'toko',
                 'gudang',
                 'toko_tujuan',
-                'gudang_tujuan'
+                'gudang_tujuan',
+                'pengirimanBarang'
             ])->where('id', '=', $id)->firstOrFail();
 
             $this->permintaanBarang = $getData->toArray();
@@ -309,6 +310,6 @@ class MainForm extends Component
 
     public function dummy()
     {
-        dd($this->state);
+        dd($this->permintaanBarang);
     }
 }

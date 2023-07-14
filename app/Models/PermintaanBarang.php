@@ -44,4 +44,9 @@ class PermintaanBarang extends Model
     {
         return $this->belongsTo(Gudang::class, 'id_gudang_tujuan', 'id');
     }
+
+    public function pengirimanBarang()
+    {
+        return $this->hasOne(PengirimanBarang::class, 'id_permintaan', 'id');
+    }
 }

@@ -53,7 +53,6 @@ class MainForm extends Component
         if ($key == 'id_toko_tujuan') {
             if ($this->state['id_toko_tujuan'] != null) {
                 $this->emit('initSelect2GudangTujuan', $this->state['id_toko_tujuan']);
-                dd("OK");
             }
         }
 
@@ -121,9 +120,11 @@ class MainForm extends Component
                 'permintaanBarang.gudang',
                 'permintaanBarang.toko_tujuan',
                 'permintaanBarang.gudang_tujuan',
+                'penerimaanBarang'
             ])->where('id', '=', $id)->firstOrFail();
 
             $this->pengirimanBarang = $getData->toArray();
+            // dd($this->pengirimanBarang);
 
             $this->state['id'] = $getData->id;
             $this->state['id_toko'] = $getData->id_toko;
@@ -389,8 +390,12 @@ class MainForm extends Component
             $this->state['id_gudang'] = $data['id_gudang_tujuan'];
             $this->state['id_toko_tujuan'] = $data['id_toko'];
             $this->state['id_gudang_tujuan'] = $data['id_gudang'];
-            $this->state['tanggal_pengiriman'] = null;
-            $this->state['keterangan'] = null;
+
+            if ($this->pengirimanBarang == null) {
+                $this->state['tanggal_pengiriman'] = null;
+                $this->state['keterangan'] = null;
+            }
+
 
             foreach ($data['detail'] as $key => $value) {
                 $this->state['detail'][$value['id_barang']] = [
@@ -403,7 +408,7 @@ class MainForm extends Component
         }
     }
 
-    public function resetForm()
+    public function resetPermintaanBarang()
     {
         $this->reset('permintaanBarang', 'state');
         $this->state = $this->params;

@@ -17,7 +17,7 @@ class MainIndex extends Component
         $getData = PengirimanBarang::with('detail', 'toko', 'gudang', 'toko_tujuan', 'gudang_tujuan')->orderBy('created_at', 'ASC')->paginate('10');
 
         return view('livewire.pengiriman-barang.main-index', [
-            'dataPermintaan' => $getData
+            'dataPengiriman' => $getData
         ])->layout('backend.layouts.master');
     }
 
