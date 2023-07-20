@@ -14,6 +14,8 @@ class MainForm extends Component
     
     public $pos = [];
 
+    public $total = 0;
+
     public function updatedPos($value, $key)
     {
         $ex = explode('.', $key);
@@ -22,6 +24,8 @@ class MainForm extends Component
                 $this->pos[$ex[0]][$ex[1]] = 1;
             }
         }
+
+        $this->sumTotal();
     }
 
     public function updatedToko($value)
@@ -83,6 +87,8 @@ class MainForm extends Component
                     'jumlah' => 1
                 ];
             }
+
+            $this->sumTotal();
         } catch (\Exception $e) {
             dd($e);
         }
@@ -93,5 +99,15 @@ class MainForm extends Component
         if (isset($this->pos[$key])) {
             unset($this->pos[$key]);
         }
+    }
+
+    public function sumTotal()
+    {
+        $total = 0;
+        foreach ($this->pos as $key => $value) {
+            $total += (double) $value['harga'] * (double) $value['jumlah'];
+        }
+
+        $this->total = $total;
     }
 }
