@@ -17,7 +17,7 @@ class ModalData extends Component
 
     public function render()
     {
-        $getData = PermintaanBarang::with([
+        $getData = PermintaanBarang::whereDoesntHave('pengirimanBarang')->with([
             'toko',
             'gudang',
         ])

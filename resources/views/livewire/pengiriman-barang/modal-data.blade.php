@@ -45,7 +45,7 @@
                 </tr>
               @empty
                 <tr>
-                  <td class="align-middle px-3 py-1 text-center" colspan="4">Belum Ada Data</td>
+                  <td class="align-middle px-3 py-1 text-center" colspan="6">Belum Ada Data</td>
                 </tr>
               @endforelse
             </tbody>
