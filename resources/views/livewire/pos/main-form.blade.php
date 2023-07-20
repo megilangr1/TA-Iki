@@ -126,6 +126,12 @@
                   <td colspan="4" class="align-middle px-2 py-3 text-center">Belum Ada Data</td>
                 </tr>
               @endforelse
+
+              <tr>
+                <td colspan="3" class="align-middle px-2 py-2 text-right font-weight-bold">Total : </td>
+                <td class="align-middle px-2 py-2 text-center font-weight-bold">Rp. {{ number_format($total, 2, ',', '.') }} </td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
         </div>
