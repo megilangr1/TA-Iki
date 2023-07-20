@@ -79,7 +79,7 @@ class MainForm extends Component
                 $this->pos[$getBarang->id] = [
                     'id_barang' => $getBarang->id,
                     'nama_barang' => $getBarang->nama_barang,
-                    'harga' => $getBarang->harga->harga,
+                    'harga' => $getBarang->harga->harga - $getBarang->harga->diskon,
                     'jumlah' => 1
                 ];
             }

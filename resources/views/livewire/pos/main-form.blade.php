@@ -58,7 +58,14 @@
                       <td class="align-middle px-2 py-1 text-center">{{ $loop->iteration }}.</td>
                       <td class="align-middle px-2 py-1 text-center">{{ $item->nama_barang }}</td>
                       <td class="align-middle px-2 py-1 text-center">{{ number_format((double) $item->total_stok, 2, ',' ,'.') }} Unit</td>
-                      <td class="align-middle px-2 py-1 text-center">Rp. {{ number_format((double) ($item->harga->harga ?? 0), 2, ',' ,'.') }}</td>
+                      <td class="align-middle px-2 py-1 text-center">
+                        Rp. 
+                        @if (isset($item->harga->harga) && isset($item->harga->diskon))
+                          {{ number_format((double) ($item->harga->harga - $item->harga->diskon), 2, ',' ,'.') }}
+                        @else
+                          0
+                        @endif
+                      </td>
                       <td class="align-middle px-2 py-1 text-center">
                         <button class="btn btn-xs btn-block btn-primary" wire:click="addBarang('{{ $item->id }}')">
                           Pilih Barang
