@@ -11,6 +11,7 @@ use App\Http\Livewire\PengirimanBarang\MainIndex as PengirimanBarangMainIndex;
 use App\Http\Livewire\PengirimanBarang\MainForm as PengirimanBarangMainForm;
 use App\Http\Livewire\PenerimaanBarang\MainIndex as PenerimaanBarangMainIndex;
 use App\Http\Livewire\PenerimaanBarang\MainForm as PenerimaanBarangMainForm;
+use App\Http\Livewire\Pos\MainForm as PosMainForm;
 use App\Http\Livewire\Pos\MainIndex as PosMainIndex;
 use App\Http\Livewire\Toko\MainIndex as TokoMainIndex;
 use Illuminate\Support\Facades\Route;
@@ -75,5 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('pos')->name('pos.')->group(function() {
         Route::get('/', PosMainIndex::class)->name('index');
     });
+
+    Route::get('/point-of-sales', PosMainForm::class)->name('point-of-sales');
 });
 
