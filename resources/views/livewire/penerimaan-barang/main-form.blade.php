@@ -11,7 +11,7 @@
         <div class="card-body text-sm p-0">
           <div class="row px-3 py-2">
             <div class="col-md-12">
-              <div class="form-group {{ $pengirimanBarang != null ? 'd-none' : 'd-block' }}">
+              <div class="form-group {{ $pengirimanBarang != null || $penerimaanBarang != null && $penerimaanBarang['status'] == 1 ? 'd-none' : 'd-block' }}">
                 <button class="btn btn-block btn-xs btn-outline-info" wire:click="openModalDataPengiriman">
                   <i class="fa fa-table"></i> &ensp; Pilih Data Permintaan Barang
                 </button>

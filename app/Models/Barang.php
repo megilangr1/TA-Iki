@@ -23,7 +23,10 @@ class Barang extends Model
 
     public function harga()
     {
-        return $this->hasOne(HargaBarang::class, 'id_barang', 'id')->orderBy('tanggal_harga', 'DESC')->orderBy('created_at', 'DESC');
+        return $this->hasOne(HargaBarang::class, 'id_barang', 'id')
+            ->orderBy('tanggal_harga', 'DESC')
+            ->orderBy('created_at', 'DESC')
+            ->whereDate('tanggal_harga', '<=', now());
     }
 
     public function hargaWithTrashed()
