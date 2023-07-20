@@ -98,6 +98,8 @@ class MainForm extends Component
     {
         if (isset($this->pos[$key])) {
             unset($this->pos[$key]);
+
+            $this->sumTotal();
         }
     }
 
@@ -109,5 +111,44 @@ class MainForm extends Component
         }
 
         $this->total = $total;
+    }
+
+    public function createData()
+    {
+        $this->resetErrorBag();
+        $this->validate([
+            'toko' => 'required|exists:tokos,id',
+            'gudang' => 'required|exists:gudangs,id',
+            'pos' => 'required|array',
+        ]);
+
+        try {
+            $insertData = [];
+
+            foreach ($this->pos as $key => $value) {
+                $getBarang = Barang::where('id', '=', $value['id_barang'])->firstOrFail();
+                $getStokBarang = StokBarang::groupBy('id_toko')->groupBy('id_gudang')->groupBy('id_barang')
+                    ->selectRaw('sum(perubahan_stok) as sisa_stok')
+                    ->orderBy('stok_barangs.id_toko', 'ASC')
+                    ->orderBy('stok_barangs.id_gudang', 'ASC')
+                    ->where('stok_barangs.id_barang', '=', $value['id_barang'])
+                    ->where('stok_barangs.id_toko', '=', $this->toko)
+                    ->where('stok_barangs.id_gudang', '=', $this->gudang);
+                $getStokBarang = $getStokBarang->firstOrFail();
+
+                $stok = $getStokBarang->sisa_stok;
+                $jumlah = (double) $value['jumlah'];
+
+                if ($jumlah < $stok) {
+                    $this->emit('Stok Untuk Barang ' . $value['nama_barang'] . ' Tidak Mencukupi Untuk Transaksi !');
+                } else {
+                    $insertData[$getBarang->id] = [
+
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

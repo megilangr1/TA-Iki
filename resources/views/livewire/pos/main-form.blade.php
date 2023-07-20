@@ -83,7 +83,7 @@
           </div>
         </div>
         <div class="card-footer">
-
+          {{ print_r($errors->all()) }}
         </div>
       </div>
     </div>
@@ -136,7 +136,12 @@
           </table>
         </div>
         <div class="card-footer">
-
+          @if (count($pos) > 0)
+            <button class="btn btn-block btn-success btn-sm" wire:click="createData">
+              <span class="fa fa-check mr-2"></span>
+              Selesaikan Transaksi
+            </button>
+          @endif
         </div>
       </div>
     </div>
