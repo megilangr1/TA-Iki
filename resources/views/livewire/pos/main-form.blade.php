@@ -11,6 +11,18 @@
         <div class="card-body pt-1">
           <div class="row">
             <div class="col-md-6">
+              <div class="form-group mb-1">
+                <label for="tanggal">Tanggal : </label>
+                <input type="datetime-local" name="tanggal" id="tanggal" class="form-control" value="{{ now() }}" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-1">
+                <label for="user">User : </label>
+                <input type="input" name="user" id="user" class="form-control" value="{{ auth()->user()->name }}" disabled>
+              </div>
+            </div>
+            <div class="col-md-6">
               <div class="form-group">
                 <label for="id_toko">Toko : </label>
                 <div wire:ignore>
@@ -83,7 +95,7 @@
           </div>
         </div>
         <div class="card-footer">
-          {{ print_r($errors->all()) }}
+          Point Of Sales
         </div>
       </div>
     </div>

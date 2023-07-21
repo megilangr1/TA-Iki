@@ -3,7 +3,10 @@
 namespace App\Http\Livewire\Pos;
 
 use App\Models\Barang;
+use App\Models\Pos;
+use App\Models\PosDetail;
 use App\Models\StokBarang;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class MainForm extends Component
@@ -122,8 +125,11 @@ class MainForm extends Component
             'pos' => 'required|array',
         ]);
 
+        DB::beginTransaction();
+
         try {
-            $insertData = [];
+            $save = true;
+            $invStok = [];
 
             foreach ($this->pos as $key => $value) {
                 $getBarang = Barang::where('id', '=', $value['id_barang'])->firstOrFail();
@@ -139,15 +145,58 @@ class MainForm extends Component
                 $stok = $getStokBarang->sisa_stok;
                 $jumlah = (double) $value['jumlah'];
 
-                if ($jumlah < $stok) {
-                    $this->emit('Stok Untuk Barang ' . $value['nama_barang'] . ' Tidak Mencukupi Untuk Transaksi !');
+                if ($jumlah > $stok) {
+                    $this->emit('error', 'Stok Untuk Barang ' . $value['nama_barang'] . ' Tidak Mencukupi Untuk Transaksi !');
+                    $save = false;
                 } else {
-                    $insertData[$getBarang->id] = [
+                    $invStok[$getBarang->id] = [
+                        'jenis_transaksi' => 2,
+                        'id_transaksi' => null,
+                        'id_transaksi_detail' => null,
+                        'id_toko' => $this->toko,
+                        'id_gudang' => $this->gudang,
+                        'id_barang' => $getBarang->id,
+                        'nominal_stok' => $jumlah,
+                        'perubahan_stok' => -1 * $jumlah,
 
+                        'harga' => $value['harga'],
+                        'sub_total' => ($value['harga'] * $jumlah),
                     ];
                 }
             }
+
+
+            if ($save) {
+                $createPos = Pos::create([
+                    'tanggal_transaksi' => now(),
+                    'user_id' => auth()->user()->id,
+                    'id_toko' => $this->toko,
+                    'id_gudang' => $this->gudang,
+                ]);
+
+                foreach ($invStok as $key => $value) {
+                    $createDetail = PosDetail::create([
+                        'id_pos' => $createPos->id,
+                        'id_barang' => $value['id_barang'],
+                        'jumlah' => $value['nominal_stok'],
+                        'harga' => $value['harga'],
+                        'sub_total' => $value['sub_total'],
+                    ]);
+
+                    $invData = $value;
+                    $invData['id_transaksi'] = $createPos->id;
+                    $invData['id_transaksi_detail'] = $createDetail->id;
+                    unset($invData['harga'], $invData['sub_total']);
+
+                    $insertStok = StokBarang::create($invData);
+
+                    DB::commit();
+                    $this->emit('success', 'Transaksi Berhasil di-Catatan dan Di-Simpan !');
+                    $this->reset('pos', 'total');
+                }
+            }
         } catch (\Exception $e) {
+            DB::rollBack();
             dd($e);
         }
     }
