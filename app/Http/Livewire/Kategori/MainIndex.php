@@ -57,10 +57,11 @@ class MainIndex extends Component
     {
         $this->resetErrorBag();
         $this->validate([
-            'state.nama_kategori' => 'required|string',
+            'state.nama_kategori' => 'required|string|unique:kategoris,nama_kategori',
             'state.keterangan' => 'nullable|string', 
         ], [
             'required' => 'Input Tidak Boleh Kosong !',
+            'unique' => 'Data Tersebut Sudah Ada!',
             'string' => 'Format Input Harus Berupa Aplhanumerik !'
         ]);
 
@@ -97,10 +98,11 @@ class MainIndex extends Component
     {
         $this->resetErrorBag();
         $this->validate([
-            'state.nama_kategori' => 'required|string',
+            'state.nama_kategori' => 'required|string|unique:kategoris,nama_kategori,'. $this->state['id'],
             'state.keterangan' => 'nullable|string', 
         ], [
             'required' => 'Input Tidak Boleh Kosong !',
+            'unique' => 'Data Tersebut Sudah Ada !',
             'string' => 'Format Input Harus Berupa Aplhanumerik !'
         ]);
 
