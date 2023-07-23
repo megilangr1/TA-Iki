@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjaxDataController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\MainController;
 use App\Http\Livewire\Barang\MainIndex as BarangMainIndex;
 use App\Http\Livewire\Kategori\MainIndex as KategoriMainIndex;
@@ -75,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('pos')->name('pos.')->group(function() {
         Route::get('/', PosMainIndex::class)->name('index');
+        Route::get('/export-excel', [ExportController::class, 'export'])->name('export-excel');
     });
 
     Route::get('/point-of-sales', PosMainForm::class)->name('point-of-sales');

@@ -9,6 +9,10 @@
           </h4>
 
           <div class="card-tools">
+            <a href="{{ route('pos.export-excel') }}" class="btn btn-xs btn-info px-3">
+              <span class="fa fa-table mr-2"></span>
+              Export To Excel
+            </a>
             <a href="{{ route('point-of-sales') }}" class="btn btn-xs btn-primary px-3">
               <span class="fa fa-plus mr-2"></span>
               Tambah Data Baru
